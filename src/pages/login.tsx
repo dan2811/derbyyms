@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
 import Logo from "../assets/logo-full.png";
+import Link from "next/link";
 
 const Login = () => {
   const { data: session } = useSession();
@@ -18,7 +19,7 @@ const Login = () => {
           />
           <p className="place-self-center">{session.user.name}</p>
           <div className="hidden w-40 flex-col bg-slate-100 text-black drop-shadow-lg group-hover:flex peer-hover:flex">
-            <a href="/profile">Profile</a>
+            <Link href="/profile">Profile</Link>
             <button onClick={() => void signOut()}>Sign out</button>
           </div>
         </div>
