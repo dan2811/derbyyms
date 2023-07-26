@@ -11,27 +11,20 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
-    userId            String
-    type              String
+    userId            String  @db.MediumText
+    type              String  @db.MediumText
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String? @db.MediumText
+    access_token      String? @db.MediumText
     expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
+    token_type        String? @db.MediumText
+    scope             String? @db.MediumText
+    id_token          String? @db.MediumText
+    session_state     String? @db.MediumText
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
@@ -47,7 +40,7 @@ model Session {
 
 model User {
     id            String    @id @default(cuid())
-    name          String?
+    name          String?   @db.MediumText
     email         String?   @unique
     emailVerified DateTime?
     image         String?
