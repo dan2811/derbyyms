@@ -6,11 +6,20 @@ import "~/styles/globals.css";
 import Login from "./login";
 import Link from "next/link";
 import Head from "next/head";
+import { Oswald } from "next/font/google";
+
+export const merriweather = Oswald({
+  weight: ["300", "400", "500", "700"],
+  style: ["normal"],
+  subsets: ["latin"],
+});
 
 const Navbar = () => (
   <nav
-    className="sticky top-0 flex flex-wrap items-center justify-between 
-    bg-gradient-to-r from-violet-900 from-10% via-violet-700 via-50% to-violet-900 to-90% p-6 text-slate-300"
+    className="sticky top-0 z-10 flex flex-wrap items-center 
+    justify-between bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 via-50% to-violet-900/80 
+    to-90% p-6
+    text-slate-300 backdrop-blur backdrop-filter"
   >
     <ul className="row flex content-between	gap-x-5">
       <li>
@@ -29,6 +38,7 @@ const Navbar = () => (
     <Login />
   </nav>
 );
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
