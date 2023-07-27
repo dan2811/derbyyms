@@ -63,9 +63,10 @@ export default function Home() {
         </div>
         <div>
           Opening Times <br></br>
-          Get these from db through api call (use SSR because these won't change
-          often, maybe force revalidate every hour or so?) Opening Hours Monday
-          - Friday: 16:00 - 20:00 Saturday: 09:30 - 16:30 Sunday: 10:00 - 16:00
+          Get these from db through api call (use SSR because these won&apos;t
+          change often, maybe force revalidate every hour or so?) Opening Hours
+          Monday - Friday: 16:00 - 20:00 Saturday: 09:30 - 16:30 Sunday: 10:00 -
+          16:00
         </div>
       </main>
     </>
