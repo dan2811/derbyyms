@@ -47,7 +47,7 @@ export default function Home() {
     p-6 text-slate-200 backdrop-blur backdrop-filter md:mt-0"
           >
             <p className="w-80">
-              Based in Pride Park, Derby, our school has delivered Yamaha's
+              Based in Pride Park, Derby, our school has delivered Yamaha&apos;s
               world renowned education system for over 30 years.
             </p>
           </div>
