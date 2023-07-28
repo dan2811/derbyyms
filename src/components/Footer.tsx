@@ -1,6 +1,4 @@
 import { BsFacebook, BsInstagram, BsYoutube } from "react-icons/bs";
-import PurpleLogoWithText from "../assets/logo-with-text.svg";
-import Image from "next/image";
 import Link from "next/link";
 export const Footer = () => {
   return (

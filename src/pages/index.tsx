@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
-import PurpleLogo from "../assets/logo-with-text.svg";
 import Link from "next/link";
 import { Footer } from "~/components/Footer";
 
