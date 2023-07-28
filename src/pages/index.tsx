@@ -18,7 +18,7 @@ export default function Home() {
         <div className="flex flex-col">
           <div className="w-full bg-black p-6">
             <Image
-              src={PurpleLogo}
+              src={PurpleLogo as string}
               width={500}
               alt="Yamaha logo"
               className="place-self-center"
