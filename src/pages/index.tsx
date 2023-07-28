@@ -1,21 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
-import LogoFull from "../assets/logo-full.png";
+import PurpleLogo from "../assets/logo-waves.svg";
 import Link from "next/link";
-
-const LogoBanner = () => {
-  return (
-    <div className="hidden w-full lg:block">
-      <div className="flex justify-center">
-        <Image
-          src={LogoFull}
-          alt="Yamaha Music School"
-          className="max-w-xl rounded-2xl bg-white p-3"
-        />
-      </div>
-    </div>
-  );
-};
+import { Footer } from "~/components/Footer";
 
 export default function Home() {
   const googleMapsLink =
@@ -27,47 +14,57 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <meta name="robots" content="noindex,nofollow" />
       </Head>
-      <main className="flex flex-col">
-        <LogoBanner />
-        <div className="justify-around self-center pt-10 lg:flex lg:w-3/4">
-          <h2 className=" max-w-md	text-6xl	font-bold	">
-            Professional Music Tuition in{" "}
-            <a
-              className="cursor-pointer hover:text-violet-600"
-              href={googleMapsLink}
-              target="_blank"
+      <main>
+        <div className="flex flex-col">
+          <div className="w-full bg-black p-6">
+            <Image
+              src={PurpleLogo}
+              width={500}
+              alt="Yamaha logo"
+              className="place-self-center"
+            />
+          </div>
+          <div className="justify-around self-center pt-10 lg:flex lg:w-3/4">
+            <h2 className=" max-w-md	text-6xl	font-bold	">
+              Professional Music Tuition in{" "}
+              <a
+                className="cursor-pointer hover:text-violet-600"
+                href={googleMapsLink}
+                target="_blank"
+              >
+                Derby.
+              </a>
+            </h2>
+            <div
+              className="to-99% mt-10
+            flex items-center rounded-xl bg-gradient-to-r from-violet-600/80 from-10% via-violet-500/80 
+            via-80% to-violet-600/80
+            p-6 text-slate-200 backdrop-blur backdrop-filter md:mt-0"
             >
-              Derby.
-            </a>
-          </h2>
-          <div
-            className="to-99% mt-10
-    flex items-center rounded-xl bg-gradient-to-r from-violet-600/80 from-10% via-violet-500/80 
-    via-80% to-violet-600/80
-    p-6 text-slate-200 backdrop-blur backdrop-filter md:mt-0"
-          >
-            <p className="w-80">
-              Based in Pride Park, Derby, our school has delivered Yamaha&apos;s
-              world renowned education system for over 30 years.
-            </p>
+              <p className="w-80">
+                Based in Pride Park, Derby, our school has delivered
+                Yamaha&apos;s world renowned education system for over 30 years.
+              </p>
+            </div>
+          </div>
+          <div className="flex w-full place-content-center pt-10">
+            <Link
+              href="/taster"
+              className="rounded-full bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 via-50% 
+            to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-300"
+            >
+              Free Taster Lesson
+            </Link>
+          </div>
+          <div>
+            Opening Times <br></br>
+            Get these from db through api call (use SSR because these won&apos;t
+            change often, maybe force revalidate every hour or so?) Opening
+            Hours Monday - Friday: 16:00 - 20:00 Saturday: 09:30 - 16:30 Sunday:
+            10:00 - 16:00
           </div>
         </div>
-        <div className="flex w-full place-content-center pt-10">
-          <Link
-            href="/taster"
-            className="rounded-full bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 via-50% 
-    to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-300"
-          >
-            Free Taster Lesson
-          </Link>
-        </div>
-        <div>
-          Opening Times <br></br>
-          Get these from db through api call (use SSR because these won&apos;t
-          change often, maybe force revalidate every hour or so?) Opening Hours
-          Monday - Friday: 16:00 - 20:00 Saturday: 09:30 - 16:30 Sunday: 10:00 -
-          16:00
-        </div>
+        <Footer />
       </main>
     </>
   );
