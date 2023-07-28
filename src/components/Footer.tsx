@@ -10,7 +10,7 @@ export const Footer = () => {
       <BsFacebook />
       <BsInstagram />
       <BsYoutube />
-      <Image src={PurpleLogo} />
+      <Image src={PurpleLogo} alt="Logo" />
     </div>
   );
 };
