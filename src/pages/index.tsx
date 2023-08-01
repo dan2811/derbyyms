@@ -1,3 +1,4 @@
+"use client";
 import Head from "next/head";
 import Link from "next/link";
 import { Footer } from "~/components/Footer";
@@ -50,7 +51,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col place-content-center place-items-center">
             <h3>Opening Times</h3>
-            <table>
+            {/* <table>
               {openingTimes.map((day) => {
                 return (
                   <tr
@@ -62,7 +63,7 @@ export default function Home() {
                   </tr>
                 );
               })}
-            </table>
+            </table> */}
           </div>
         </div>
         <Footer />
