@@ -24,6 +24,7 @@ import { IoMdSchool } from "react-icons/io";
 import { BiSolidMessageDetail } from "react-icons/bi";
 import { Toaster } from "react-hot-toast";
 import { useReportWebVitals } from "next-axiom";
+import Login from "../components/Login";
 export { useReportWebVitals } from "next-axiom";
 
 export const merriweather = Oswald({
@@ -67,6 +68,7 @@ const Navbar = () => {
         alt="Yamaha - make waves"
         className="hidden h-20 md:block "
       />
+      <Login />
       <SwipeableDrawer
         open={open}
         onClose={toggleDrawer(false)}

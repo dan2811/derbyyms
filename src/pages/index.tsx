@@ -44,7 +44,7 @@ export default function Home() {
             <Link
               href="/taster"
               className="rounded-full bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 via-50% 
-            to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-300"
+            to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-100"
             >
               Free Taster Lesson
             </Link>

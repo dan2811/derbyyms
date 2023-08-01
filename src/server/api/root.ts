@@ -1,5 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import PupilRouter from "./routers/PupilRouter";
+import PupilRouter from "./routers/Pupil";
+import InstrumentRouter from "./routers/Instrument";
 
 /**
  * This is the primary router for your server.
@@ -7,7 +8,8 @@ import PupilRouter from "./routers/PupilRouter";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  pupil: PupilRouter
+  pupil: PupilRouter,
+  instrument: InstrumentRouter
 });
 
 // export type definition of API
