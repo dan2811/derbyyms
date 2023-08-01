@@ -1,5 +1,6 @@
 import React from "react";
 import { toast } from "react-hot-toast";
+import { Footer } from "~/components/Footer";
 import { api } from "~/utils/api";
 
 const TasterForm = () => {
@@ -109,6 +110,7 @@ const TasterForm = () => {
         </div>
         <button type="submit">Submit</button>
       </form>
+      <Footer />
     </div>
   );
 };
