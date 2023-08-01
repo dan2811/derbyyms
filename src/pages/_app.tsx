@@ -23,6 +23,9 @@ import {
 import { BsHouseFill, BsPeopleFill } from "react-icons/bs";
 import { IoMdSchool } from "react-icons/io";
 import { BiSolidMessageDetail } from "react-icons/bi";
+import { Toaster } from "react-hot-toast";
+import { useReportWebVitals } from "next-axiom";
+export { useReportWebVitals } from "next-axiom";
 
 export const merriweather = Oswald({
   weight: ["300", "400", "500", "700"],
@@ -52,12 +55,11 @@ const Navbar = () => {
     to-90% p-6
     text-slate-300 backdrop-blur backdrop-filter"
     >
-      <div>
+      <div onClick={() => setOpen(!open)} className="cursor-pointer">
         <Image
           src={Logo as string}
           alt="Yamaha Music Logo"
           className="h-12 p-0 text-slate-100"
-          onClick={() => setOpen(!open)}
         />
         <p className="w-full text-center">MENU</p>
       </div>
@@ -131,8 +133,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  useReportWebVitals();
   return (
     <SessionProvider session={session}>
+      <Toaster />
       <Head>
         <title>Derby YMS - Home</title>
         <link rel="icon" href="/favicon.ico" />
