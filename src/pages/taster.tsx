@@ -1,6 +1,5 @@
 import React from "react";
 import { toast } from "react-hot-toast";
-import Error from "~/components/Error";
 import { api } from "~/utils/api";
 
 const TasterForm = () => {
