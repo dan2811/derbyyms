@@ -34,10 +34,18 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 
 ## Taster sign up
 
-[X] All users wishing to book a taster lesson must first sign in using an oAuth2 provider.
+[x] All users wishing to book a taster lesson must first sign in using an oAuth2 provider.
+
 [] Implement other Oauth providers
+
 [] Form calls different api route depending on if the taster is for themselves or their child.
+
 [] This creates a parent record + a pupil record.
+
+[x] Instrument list is populated from DB on taster form
+
 OR
+
 [] If the lesson is for themselves it creates just a pupil record
+
 [] Handle siblings (This is just add another pupil on the form)
