@@ -3,7 +3,6 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
-import Login from "./login";
 import Link from "next/link";
 import Head from "next/head";
 import { Oswald } from "next/font/google";
@@ -68,7 +67,6 @@ const Navbar = () => {
         alt="Yamaha - make waves"
         className="hidden h-20 md:block "
       />
-      <Login />
       <SwipeableDrawer
         open={open}
         onClose={toggleDrawer(false)}
