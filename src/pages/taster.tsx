@@ -12,17 +12,13 @@ import { api } from "~/utils/api";
 
 interface ParentInfoProps {
   onParentFieldChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  parentInfo: ParentInfoFields;
-  setParentInfo: React.Dispatch<React.SetStateAction<ParentInfoFields>>;
 }
 
-const ParentInfo = ({
-  onParentFieldChange,
-  parentInfo,
-  setParentInfo,
-}: ParentInfoProps) => (
+const ParentInfo = ({ onParentFieldChange }: ParentInfoProps) => (
   <>
-    <h2 className="pb-4	text-2xl font-bold">Your information</h2>
+    <h2 className="pb-4 text-2xl	font-bold transition-colors duration-1000">
+      Your information
+    </h2>
     <div className="flex flex-col">
       <label htmlFor="fName" className="mb-2">
         First Name
@@ -52,7 +48,7 @@ const ParentInfo = ({
       />
     </div>
 
-    <div className="flex flex-col">
+    {/* <div className="flex flex-col">
       <label htmlFor="email" className="mb-2">
         Email
       </label>
@@ -64,7 +60,7 @@ const ParentInfo = ({
         onChange={onParentFieldChange}
         required
       />
-    </div>
+    </div> */}
 
     <div className="flex flex-col">
       <label htmlFor="phone" className="mb-2">
@@ -210,7 +206,7 @@ const PupilInfo = ({
           />
         </div>
 
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <label htmlFor="email" className="mb-2">
             Email
           </label>
@@ -220,9 +216,10 @@ const PupilInfo = ({
             id="email"
             className="rounded-md border-b-8 p-2 outline-none focus:border-violet-500"
             onChange={onFieldChange}
-            required
+            placeholder={tasterFor === "me" ? "" : "Not required"}
+            required={tasterFor === "me"}
           />
-        </div>
+        </div> */}
 
         <div className="flex flex-col">
           <label htmlFor="phone" className="mb-2">
@@ -234,7 +231,8 @@ const PupilInfo = ({
             id="phone"
             className="rounded-md border-b-8 p-2 outline-none focus:border-violet-500"
             onChange={onFieldChange}
-            required
+            placeholder={tasterFor === "me" ? "" : "Not required"}
+            required={tasterFor === "me"}
           />
         </div>
 
@@ -338,8 +336,10 @@ interface PupilInfoFields {
 interface ParentInfoFields {
   fName: string;
   lName: string;
-  email: string;
   phone: string;
+  addressLine1: string;
+  addressLine2: string;
+  postcode: string;
 }
 
 const TasterForm = () => {
@@ -349,7 +349,6 @@ const TasterForm = () => {
     mName: "",
     lName: "",
     dob: "",
-    email: "",
     phone: "",
     addressLine1: "",
     addressLine2: "",
@@ -358,36 +357,89 @@ const TasterForm = () => {
     extraInfo: "",
   });
 
+  const [parentInfo, setParentInfo] = useState<ParentInfoFields>({
+    fName: "",
+    lName: "",
+    phone: "",
+    addressLine1: "",
+    addressLine2: "",
+    postcode: "",
+  });
+
   const [tasterFor, setTasterFor] = useState<"me" | "someone else">(
     "someone else"
   );
 
   if (session.status === "unauthenticated") return signIn();
 
-  const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const onPupilFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value: (typeof pupilInfo)[keyof typeof pupilInfo] =
       event.target.value;
     setPupilInfo({ ...pupilInfo, [event.target.id]: value });
-    console.log(event.target.id, pupilInfo);
+    console.log("PUPIL", event.target.id, pupilInfo);
   };
 
-  const { mutate, isLoading } = api.pupil.create.useMutation();
+  const onParentFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value: (typeof parentInfo)[keyof typeof parentInfo] =
+      event.target.value;
+    setParentInfo({ ...parentInfo, [event.target.id]: value });
+    console.log("PARENT: ", event.target.id, parentInfo);
+  };
+
+  const { mutate: createMultiplePupils, isLoading: isPupilCreateLoading } =
+    api.pupil.createMultiple.useMutation();
+  const { mutate: createAdultPupil, isLoading: isCreateAdultPupilLoading } =
+    api.pupil.createAdultPupil.useMutation();
+  const { mutate: createParent, isLoading: isParentCreateLoading } =
+    api.parent.create.useMutation();
 
   const submitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("form data: ", pupilInfo);
-    mutate(pupilInfo, {
-      onSuccess: (data) => {
-        toast.success(`Success`);
-      },
-      onError: (data) => {
-        console.error(data);
-        toast.error(`Error: ${data.message}`);
-      },
-    });
+
+    if (tasterFor === "me") {
+      //only create a pupil record
+      createAdultPupil(pupilInfo, {
+        onSuccess: (data) => {
+          console.log("adult pupil created: ", data);
+          toast.success(`Success`);
+        },
+        onError: (data) => {
+          console.error(data);
+          toast.error(`Error: ${data.message}`);
+        },
+      });
+    }
+
+    if (tasterFor === "someone else") {
+      //TODO sort out this manual array assignment below
+      createMultiplePupils([pupilInfo], {
+        onSuccess: (data) => {
+          if (!Array.isArray(data)) {
+            throw Error("Expected an array of pupils");
+          }
+          const parentInfoWithPupilIds = {
+            ...parentInfo,
+            pupilIds: data.map((pupil) => pupil.id),
+          };
+          createParent(parentInfoWithPupilIds, {
+            onSuccess: (data) => {
+              toast.success(`Success`);
+            },
+            onError: (data) => {
+              console.error(data);
+              toast.error(`Error: ${data.message}`);
+            },
+          });
+        },
+        onError: (data) => {
+          console.error(data);
+          toast.error(`Error: ${data.message}`);
+        },
+      });
+    }
   };
 
-  if (isLoading)
+  if (isPupilCreateLoading)
     return (
       <div className="flex h-screen w-full justify-center md:mb-8 md:mt-8">
         <CircularProgress sx={{ color: "#9760f2" }} />
@@ -444,20 +496,20 @@ const TasterForm = () => {
           <form onSubmit={submitForm} className="flex flex-col">
             {tasterFor === "someone else" && (
               <div className="mb-12 flex max-w-md flex-col justify-evenly rounded-md bg-violet-100 p-6 shadow-md">
-                <ParentInfo />
+                <ParentInfo onParentFieldChange={onParentFieldChange} />
               </div>
             )}
             <div className="flex max-w-md flex-col justify-evenly rounded-md bg-violet-100 p-6 shadow-md">
               <PupilInfo
                 setState={setPupilInfo}
-                onFieldChange={onFieldChange}
+                onFieldChange={onPupilFieldChange}
                 pupilInfoState={pupilInfo}
                 tasterFor={tasterFor}
               />
             </div>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isPupilCreateLoading}
               className="m-6 rounded-full bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 
             via-50% to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-100"
             >
