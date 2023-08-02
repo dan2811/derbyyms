@@ -49,6 +49,7 @@ model User {
   role          String    @default("pupil")
   accounts      Account[]
   sessions      Session[]
+  Pupil         Pupil[]
 }
 
 model VerificationToken {
@@ -86,65 +87,90 @@ model Lesson {
   day          Day          @relation(fields: [dayName], references: [name])
   dayName      String
   Attendance   Attendance[]
+  Parent       Parent?      @relation(fields: [parentId], references: [id])
+  parentId     String?
 
   @@index([dayName])
   @@index([teacherId])
   @@index([instrumentId])
+  @@index([parentId])
 }
 
 model TasterLesson {
-  id        String   @id @default(cuid())
-  teacherId String?
-  teacher   Teacher? @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  pupils    Pupil[]
+  id            String          @id @default(cuid())
+  teacherId     String?
+  teacher       Teacher?        @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  pupils        Pupil[]
   //start and end times are stored as minutes from midnight so 0 = 00:00, 60 = 01:00, 120 = 02:00 etc.
-  startTime Int
-  endTime   Int
-  day       String
+  startTime     Int
+  endTime       Int
+  day           String
+  Parent        Parent?         @relation(fields: [parentId], references: [id])
+  parentId      String?
+  TasterEnquiry TasterEnquiry[]
 
   @@index([teacherId])
+  @@index([parentId])
+}
+
+model TasterEnquiry {
+  id             String        @id @default(cuid())
+  instrument     String
+  otherInfo      String
+  pupilId        String?
+  pupil          Pupil?        @relation(fields: [pupilId], references: [id])
+  parentId       String?
+  parent         Parent?       @relation(fields: [parentId], references: [id])
+  tasterLessonId String?
+  tasterLesson   TasterLesson? @relation(fields: [tasterLessonId], references: [id])
+
+  @@index([pupilId])
+  @@index([parentId])
+  @@index([tasterLessonId])
 }
 
 model Pupil {
-  id            String         @id @default(cuid())
+  id            String          @id @default(cuid())
   fName         String
   mName         String?
   lName         String
   dob           DateTime
-  email         String?
+  email         String?         @unique
   phone         String?
   extraNeeds    String?
   addressLine1  String?
   addressLine2  String?
   postcode      String?
-  Lessons       Lesson[]
+  lessons       Lesson[]
   tasterLessons TasterLesson[]
   enrolled      DateTime?
   droppedOut    DateTime?
   paymentType   String?
-  Parent        Parent?        @relation(fields: [parentId], references: [id])
-  parentId      String?
+  Parent        Parent[]
   Attendance    Attendance[]
+  User          User?           @relation(fields: [userId], references: [id])
+  userId        String?
+  payment       Payment[]
+  TasterEnquiry TasterEnquiry[]
 
-  @@index([parentId])
+  @@index([userId])
 }
 
 model Parent {
-  id           String  @id @default(cuid())
-  fName        String
-  lName        String
-  email        String
-  phone        String
-  Pupil        Pupil[]
-  addressLine1 String
-  addressLine2 String
-  postcode     String
-}
-
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String          @id @default(cuid())
+  fName         String
+  lName         String
+  email         String          @unique
+  phone         String          @unique
+  Pupil         Pupil[]
+  addressLine1  String
+  addressLine2  String
+  postcode      String
+  ///parents can have taster lessons too!
+  tasterLessons TasterLesson[]
+  ///parents can have lessons too!
+  Lessons       Lesson[]
+  TasterEnquiry TasterEnquiry[]
 }
 
 model Instrument {
@@ -171,13 +197,29 @@ model Day {
 }
 
 model Attendance {
-  id       String @id @default(cuid())
-  pupil    Pupil  @relation(fields: [pupilId], references: [id])
+  id       String   @id @default(cuid())
+  pupil    Pupil    @relation(fields: [pupilId], references: [id])
   pupilId  String
-  lesson   Lesson @relation(fields: [lessonId], references: [id])
+  lesson   Lesson   @relation(fields: [lessonId], references: [id])
   lessonId String
   mark     String
+  date     DateTime
 
   @@index([pupilId])
   @@index([lessonId])
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  pupil     Pupil    @relation(fields: [pupilId], references: [id])
+  pupilId   String
+  amount    Int
+  date      DateTime
+  method    String
+  reference String?
+  detail    String?
+  product   String
+  settled   Boolean  @default(false)
+
+  @@index([pupilId])
 }

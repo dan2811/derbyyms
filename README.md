@@ -1,51 +1,32 @@
-# Create T3 App
-
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
-
-## What's next? How do I make an app with this?
-
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
-
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
-
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
-
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
-
-
-
-
 # User Flow
 
 ## Taster sign up
 
+user visits home page  -> user clicks free taster lesson button -> user logs in (this could happen earlier in the flow) -> user fills in taster form -> we contact the user and arrange a time -> auto email is sent to user with details of the taster lesson
+
+### TODO
 [x] All users wishing to book a taster lesson must first sign in using an oAuth2 provider.
 
 [] Implement other Oauth providers
 
+[x] Instrument list is populated from DB on taster form
+
 [] Form calls different api route depending on if the taster is for themselves or their child.
 
 [] This creates a parent record + a pupil record.
-
-[x] Instrument list is populated from DB on taster form
 
 OR
 
 [] If the lesson is for themselves it creates just a pupil record
 
 [] Handle siblings (This is just add another pupil on the form)
+
+[] Handle scenarios where parent is logged in and has booked a taster previously (either for themselves or a child) and now wants to book a new taster (either for themselves or a child). 
+    - We shouldn't collect parent details twice. Only the new pupil's data or the parents preferences for their own taster lesson (instrument + any other info)
+    - User is already a pupil but they want to book a taster for a child. They should get promoted to parent who has lessons.
+    - We should also ensure that if the user is already a parent and they try to book a taster for another child that we do not create a duplicate record in the db for the parent.
+
+## Feature ideas
+
+- Playable keyboard
+- Happy birthday emails from the student's teachers
