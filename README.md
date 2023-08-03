@@ -6,18 +6,16 @@ user visits home page  -> user clicks free taster lesson button -> user logs in 
 
 ### TODO
 [x] All users wishing to book a taster lesson must first sign in using an oAuth2 provider.
+[x] Instrument list is populated from DB on taster form
+[X] Form calls different api route depending on if the taster is for themselves or their child.
+[X] This creates a parent record + a pupil record.
+[X] If the lesson is for themselves it creates just a pupil record
+
+[X] Schema for tasterEnquiry
+
+[] Taster form should create a tasterEnquiry in the db.
 
 [] Implement other Oauth providers
-
-[x] Instrument list is populated from DB on taster form
-
-[] Form calls different api route depending on if the taster is for themselves or their child.
-
-[] This creates a parent record + a pupil record.
-
-OR
-
-[] If the lesson is for themselves it creates just a pupil record
 
 [] Handle siblings (This is just add another pupil on the form)
 
