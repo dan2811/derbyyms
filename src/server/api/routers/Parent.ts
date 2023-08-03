@@ -16,7 +16,7 @@ const ParentRouter = createTRPCRouter({
             data: {
                 fName: input.fName,
                 lName: input.lName,
-                email: ctx.session.user.email,
+                email: ctx.session.user.email ?? "",
                 phone: input.phone,
                 addressLine1: input.addressLine1,
                 addressLine2: input.addressLine2,
