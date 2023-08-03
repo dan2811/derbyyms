@@ -2,6 +2,7 @@ import React, { type ChangeEvent, useEffect, useState } from "react";
 import FormWrapper from "./FormWrapper";
 import { api } from "~/utils/api";
 import { z } from "zod";
+import { type Pupil } from "@prisma/client";
 
 interface Instrument {
   name: string;
@@ -16,10 +17,13 @@ const AdultPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
   >(null);
 
   useEffect(() => {
-    if (userData?.Pupil !== undefined && Array.isArray(userData?.Pupil)) {
-      setPupilAlreadyCreated(userData?.Pupil.length > 0);
+    if (userData) {
+      if (Array.isArray(userData.Pupil)) {
+        const pupilArray = userData.Pupil as Pupil[];
+        setPupilAlreadyCreated(pupilArray.length > 0);
+      }
     }
-  }, [userData?.Pupil]);
+  }, [userData]);
 
   return pupilAlreadyCreated ? (
     <ExistingAdultPupilForm instruments={instruments} />
