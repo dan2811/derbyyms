@@ -7,15 +7,15 @@ export default function Home() {
   const googleMapsLink =
     "https://www.google.com/maps/place/Derby+Yamaha+Music+School/@52.910254,-1.4516132,17z/data=!3m1!4b1!4m6!3m5!1s0x4879f10070bf048b:0x3f2160201caaf381!8m2!3d52.910254!4d-1.4516132!16s%2Fg%2F1tfkf37x?entry=ttu";
 
-  const openingTimes = [
-    { day: "Monday", hours: "16:00 - 20:00" },
-    { day: "Tuesday", hours: "16:00 - 20:00" },
-    { day: "Wednesday", hours: "16:00 - 20:00" },
-    { day: "Thursday", hours: "16:00 - 20:00" },
-    { day: "Friday", hours: "16:00 - 20:00" },
-    { day: "Saturday", hours: "09:30 - 16:30" },
-    { day: "Sunday", hours: "10:00 - 16:00" },
-  ];
+  // const openingTimes = [
+  //   { day: "Monday", hours: "16:00 - 20:00" },
+  //   { day: "Tuesday", hours: "16:00 - 20:00" },
+  //   { day: "Wednesday", hours: "16:00 - 20:00" },
+  //   { day: "Thursday", hours: "16:00 - 20:00" },
+  //   { day: "Friday", hours: "16:00 - 20:00" },
+  //   { day: "Saturday", hours: "09:30 - 16:30" },
+  //   { day: "Sunday", hours: "10:00 - 16:00" },
+  // ];
   return (
     <>
       <Head>

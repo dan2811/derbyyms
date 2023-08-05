@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FormWrapper from "./FormWrapper";
 import { api } from "~/utils/api";
-import { Pupil } from "@prisma/client";
 import { z } from "zod";
 import { CircularProgress } from "@mui/material";
-import Success from "../../pages/taster/success";
 import { useRouter } from "next/router";
 
 interface Instrument {
