@@ -26,6 +26,7 @@ import { Toaster } from "react-hot-toast";
 import { useReportWebVitals } from "next-axiom";
 import Login from "../components/Login";
 export { useReportWebVitals } from "next-axiom";
+import { Analytics } from '@vercel/analytics/react';
 
 export const merriweather = Oswald({
   weight: ["300", "400", "500", "700"],
@@ -136,6 +137,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   useReportWebVitals();
   return (
     <SessionProvider session={session}>
+<Analytics />
       <Toaster />
       <Head>
         <title>Derby YMS - Home</title>
