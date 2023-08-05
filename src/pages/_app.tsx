@@ -92,13 +92,13 @@ const Navbar = () => {
                 </ListItemButton>
               </ListItem>
             </Link>
-            <Link href="/lessons">
+            <Link href="/courses">
               <ListItem className="mr-20" disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
                     <IoMdSchool className="text-slate-200" />
                   </ListItemIcon>
-                  <ListItemText primary="Lessons" />
+                  <ListItemText primary="Courses" />
                 </ListItemButton>
               </ListItem>
             </Link>
