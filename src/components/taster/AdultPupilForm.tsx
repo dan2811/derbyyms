@@ -1,8 +1,9 @@
-import React, { type ChangeEvent, useEffect, useState } from "react";
+import React, { type ChangeEvent, useState } from "react";
 import FormWrapper from "./FormWrapper";
 import { api } from "~/utils/api";
 import { z } from "zod";
-import { type Pupil } from "@prisma/client";
+import { CircularProgress } from "@mui/material";
+import { useRouter } from "next/router";
 
 interface Instrument {
   name: string;
@@ -10,22 +11,13 @@ interface Instrument {
 }
 
 const AdultPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
-  const { data: userData } = api.user.getCurrent.useQuery();
+  const { data: userData, isSuccess } = api.user.getCurrent.useQuery();
 
-  const [pupilAlreadyCreated, setPupilAlreadyCreated] = useState<
-    boolean | null
-  >(null);
+  if (!isSuccess) return <CircularProgress />;
 
-  useEffect(() => {
-    if (userData) {
-      if (Array.isArray(userData.Pupil)) {
-        const pupilArray = userData.Pupil as Pupil[];
-        setPupilAlreadyCreated(pupilArray.length > 0);
-      }
-    }
-  }, [userData]);
+  if (!userData) return <CircularProgress />;
 
-  return pupilAlreadyCreated ? (
+  return Object.hasOwn(userData, "Pupil") && userData.Pupil !== null ? (
     <ExistingAdultPupilForm instruments={instruments} />
   ) : (
     <NewAdultPupilForm instruments={instruments} />
@@ -56,7 +48,14 @@ const ExistingAdultPupilForm = ({
     console.log("error", zResult.error.formErrors);
   };
 
-  const { mutate, isLoading: isSubmitting } = api.taster.create.useMutation();
+  const router = useRouter();
+  const { mutate, isLoading: isSubmitting } =
+    api.taster.createTasterForExistingAdultPupil.useMutation({
+      onSuccess: () => router.push("/taster/success"),
+    });
+
+  if (isSubmitting) return <CircularProgress />;
+
   return (
     <>
       <FormWrapper>
@@ -72,6 +71,7 @@ const ExistingAdultPupilForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, instrument: e.target.value })
               }
+              autoFocus
               required
             >
               {instruments.map((instrument) => (
@@ -99,15 +99,18 @@ const ExistingAdultPupilForm = ({
               }
             />
           </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="m-6 rounded-full bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 
-            via-50% to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-100"
-          >
-            Submit
-          </button>
+          {isSubmitting ? (
+            <CircularProgress />
+          ) : (
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="m-6 rounded-full bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 
+          via-50% to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-100"
+            >
+              Submit
+            </button>
+          )}
         </form>
       </FormWrapper>
     </>
@@ -125,7 +128,7 @@ const NewAdultPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
     addressLine2: z.string(),
     postcode: z.string(),
     instrument: z.string(),
-    extraInfo: z.string(),
+    otherInfo: z.string(),
   });
 
   const [formData, setFormData] = useState<z.infer<typeof formSchema>>({
@@ -138,8 +141,10 @@ const NewAdultPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
     addressLine2: "",
     postcode: "",
     instrument: instruments[0]?.name ?? "",
-    extraInfo: "",
+    otherInfo: "",
   });
+
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -156,8 +161,18 @@ const NewAdultPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
     setFormData({ ...formData, [event.target.id]: value });
   };
 
-  const { mutate, isLoading: isSubmitting } =
-    api.user.createAdultPupilTaster.useMutation();
+  const {
+    mutate,
+    isLoading: isSubmitting,
+    isSuccess: isSubmitSuccessful,
+  } = api.taster.createTasterForNewAdultPupil.useMutation({
+    onSuccess: () => router.push("/taster/success"),
+  });
+
+  if (isSubmitting) return <CircularProgress />;
+  if (isSubmitSuccessful) {
+    async () => await router.push("/taster/success");
+  }
   return (
     <>
       <FormWrapper>
@@ -173,6 +188,7 @@ const NewAdultPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
               id="fName"
               className="rounded-md border-b-8 p-2 outline-none focus:border-violet-500"
               onChange={onFieldChange}
+              autoFocus
               required
             />
           </div>
@@ -300,30 +316,34 @@ const NewAdultPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="extraInfo" className="mb-2">
+            <label htmlFor="otherInfo" className="mb-2">
               Do you have any previous experience, or is there anything else we
               should know?
             </label>
             <textarea
-              name="extraInfo"
-              id="extraInfo"
+              name="otherInfo"
+              id="otherInfo"
               className="h-32 w-full resize-none rounded-md border-b-8 p-2 outline-none focus:border-violet-500"
               onChange={(event) =>
                 setFormData({
                   ...formData,
-                  extraInfo: event.target.value,
+                  otherInfo: event.target.value,
                 })
               }
             />
           </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="m-6 rounded-full bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 
-            via-50% to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-100"
-          >
-            Submit
-          </button>
+          {isSubmitting ? (
+            <CircularProgress />
+          ) : (
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="m-6 rounded-full bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 
+          via-50% to-violet-900/80 to-90% p-2 pl-5 pr-5 text-slate-100"
+            >
+              Submit
+            </button>
+          )}
         </form>
       </FormWrapper>
     </>

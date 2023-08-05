@@ -1,9 +1,9 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import PupilRouter from "./routers/Pupil";
 import InstrumentRouter from "./routers/Instrument";
-import ParentRouter from "./routers/Parent";
 import UserRouter from "./routers/User";
 import TasterRouter from "./routers/Taster";
+import CourseRouter from "./routers/Course";
 
 /**
  * This is the primary router for your server.
@@ -12,10 +12,10 @@ import TasterRouter from "./routers/Taster";
  */
 export const appRouter = createTRPCRouter({
   pupil: PupilRouter,
-  parent: ParentRouter,
   instrument: InstrumentRouter,
   user: UserRouter,
-  taster: TasterRouter
+  taster: TasterRouter,
+  course: CourseRouter,
 });
 
 // export type definition of API
