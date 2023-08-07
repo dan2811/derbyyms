@@ -52,22 +52,22 @@ const Navbar = () => {
   return (
     <nav
       className="sticky top-0 z-10 flex flex-wrap items-center 
-    justify-between bg-gradient-to-r from-violet-900/80 from-10% via-violet-600/80 via-50% to-violet-900/80 
-    to-90% p-6
+    justify-between bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/80 via-50% to-violet-900/80 
+    to-90% p-4
     text-slate-300 backdrop-blur backdrop-filter"
     >
       <div onClick={() => setOpen(!open)} className="cursor-pointer">
         <Image
           src={Logo as string}
           alt="Yamaha Music Logo"
-          className="h-12 p-0 text-slate-100"
+          className="h-12 p-0"
         />
         <p className="w-full text-center">MENU</p>
       </div>
       <Image
         src={MakeWavesLogo as string}
         alt="Yamaha - make waves"
-        className="hidden h-20 md:block "
+        className="hidden h-20 md:block"
       />
       <Login />
       <SwipeableDrawer

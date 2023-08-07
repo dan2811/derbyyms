@@ -14,9 +14,19 @@ const ParentAndPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
   const { data: userData, isSuccess: isUserRetrieved } =
     api.user.getCurrent.useQuery();
 
-  if (!isUserRetrieved) return <CircularProgress />;
+  if (!isUserRetrieved)
+    return (
+      <div className="flex w-full place-content-center">
+        <CircularProgress sx={{ color: "#9760f2" }} />
+      </div>
+    );
 
-  if (!userData) return <CircularProgress />;
+  if (!userData)
+    return (
+      <div className="flex w-full max-w-md place-content-center rounded-md bg-red-200 p-6 shadow-md">
+        Something went wrong, please make sure you are logged in.
+      </div>
+    );
 
   return Object.hasOwn(userData, "Pupil") && userData.Pupil !== null ? (
     <ExistingParentAndPupilForm instruments={instruments} />

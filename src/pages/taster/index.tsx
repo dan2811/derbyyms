@@ -28,7 +28,7 @@ const TasterForm = () => {
 
   return (
     <>
-      <div className="flex h-fit w-full justify-center md:mb-8 md:mt-8">
+      <div className="mb-8 mt-8 flex h-fit w-full justify-center">
         <div className="flex flex-col">
           <FormWrapper>
             <label htmlFor="taster-for-who" className="pb-4	text-2xl font-bold">

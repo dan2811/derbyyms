@@ -1,5 +1,6 @@
 import { BsFacebook, BsInstagram, BsYoutube } from "react-icons/bs";
 import Link from "next/link";
+import Keyboard from "./Keyboard";
 export const Footer = () => {
   return (
     <div
@@ -8,15 +9,25 @@ export const Footer = () => {
     >
       <div className="flex w-full justify-around p-6">
         <Link href="https://www.facebook.com/DerbyYMS" target="blank">
-          <BsFacebook className="text-slate-100" size={50} />
+          <BsFacebook
+            className="text-slate-400 duration-500 hover:text-slate-100"
+            size={50}
+          />
         </Link>
         <Link href="https://www.instagram.com/derbyyms" target="blank">
-          <BsInstagram className="text-slate-100" size={50} />
+          <BsInstagram
+            className="text-slate-400 duration-500 hover:text-slate-100"
+            size={50}
+          />
         </Link>
         <Link href="https://youtube.com/@DerbyYamahaMusicSchool" target="blank">
-          <BsYoutube className="text-slate-100" size={50} />
+          <BsYoutube
+            className="text-slate-400 duration-500 hover:text-slate-100"
+            size={50}
+          />
         </Link>
       </div>
+      <Keyboard />
     </div>
   );
 };
