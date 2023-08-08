@@ -90,10 +90,31 @@ model Lesson {
   dayName       String
   attendance    Attendance[]
   CatchupLesson CatchupLesson[]
+  courseId      String?
+  course        Course?         @relation(fields: [courseId], references: [name])
+  book          Book?           @relation(fields: [bookId], references: [id])
+  grade         Grade?          @relation(fields: [gradeId], references: [id])
+  courseName    String?
+  bookId        String?
+  gradeId       String?
+  lessonTypeId  String
+  lessonType    LessonType      @relation(fields: [lessonTypeId], references: [id])
 
   @@index([dayName])
   @@index([teacherId])
   @@index([instrumentId])
+  @@index([lessonTypeId])
+  @@index([courseId])
+  @@index([bookId])
+  @@index([gradeId])
+}
+
+model LessonType {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  price       Decimal
+  description String
+  Lesson      Lesson[]
 }
 
 model CatchupLesson {
@@ -162,6 +183,7 @@ model Pupil {
   tasterEnquiry TasterEnquiry[]
   userId        String?         @unique
   User          User?           @relation(fields: [userId], references: [id])
+  GradeResult   GradeResult[]
 
   @@index([userId])
 }
@@ -185,12 +207,49 @@ model Course {
   maxClassSize            Int
   privateLessonsAvailable Boolean
   isPublic                Boolean
+  Lesson                  Lesson[]
 
   @@index([instrumentId])
 }
 
+model Book {
+  id          String   @id @default(cuid())
+  name        String
+  price       String
+  stockLevel  Int
+  description String
+  Lesson      Lesson[]
+  Grade       Grade[]
+}
+
+model Grade {
+  id          String        @id @default(cuid())
+  level       Int
+  examBoard   String
+  bookId      String
+  book        Book          @relation(fields: [bookId], references: [id])
+  Lesson      Lesson[]
+  GradeResult GradeResult[]
+
+  @@index([bookId])
+}
+
+model GradeResult {
+  id      String @id @default(cuid())
+  pupilId String
+  pupil   Pupil  @relation(fields: [pupilId], references: [id])
+  grade   Grade  @relation(fields: [gradeId], references: [id])
+  gradeId String
+  /// Overall percentage
+  mark    Int
+
+  @@index([pupilId])
+  @@index([gradeId])
+}
+
 model Day {
-  name        String   @id
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
   openingTime Int
   closingTime Int
   lesson      Lesson[]

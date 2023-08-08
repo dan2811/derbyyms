@@ -5,6 +5,7 @@ import UserRouter from "./routers/User";
 import TasterRouter from "./routers/Taster";
 import CourseRouter from "./routers/Course";
 import DayRouter from "./routers/Day";
+import LessonTypeRouter from "./routers/LessonType";
 
 /**
  * This is the primary router for your server.
@@ -17,7 +18,8 @@ export const appRouter = createTRPCRouter({
   user: UserRouter,
   taster: TasterRouter,
   course: CourseRouter,
-  day: DayRouter
+  day: DayRouter,
+  lessonType: LessonTypeRouter
 });
 
 // export type definition of API

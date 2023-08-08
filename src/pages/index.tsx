@@ -17,6 +17,18 @@ export default function Home() {
         <title>Derby YMS - Home</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="robots" content="noindex,nofollow" />
+        {/* search engine description */}
+        <meta
+          property="description"
+          content="High quality professional music tuition in Derby"
+        />
+        {/* //Link preview title */}
+        <meta property="og:title" content="Derby Yamaha Music School"></meta>
+        {/* Link preview description */}
+        <meta
+          property="og:description"
+          content="High quality professional music tuition in Derby"
+        />
       </Head>
       <main>
         <div className="flex flex-col">
