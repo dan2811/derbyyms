@@ -33,16 +33,21 @@ export default function Home() {
       <main>
         <div className="flex flex-col">
           <div className=" grid justify-around gap-4 self-center pt-10 md:grid-cols-2 lg:w-3/4">
-            <p className="text-6xl font-bold">
-              Professional Music Tuition in{" "}
-              <a
-                className="cursor-pointer hover:text-violet-600"
-                href={googleMapsLink}
-                target="_blank"
-              >
-                Derby.
-              </a>
-            </p>
+            <div className="m-1 skew-x-12 rounded-lg bg-gradient-to-r from-violet-900/80 to-pink-400/80 p-1 text-slate-300 duration-500 hover:translate-x-1 hover:text-white">
+              <div className="flex -skew-x-12 items-center justify-center text-xl md:text-3xl">
+                <p className="text-6xl font-bold">
+                  Professional Music Tuition in{" "}
+                  <a
+                    className="cursor-pointer hover:text-violet-600"
+                    href={googleMapsLink}
+                    target="_blank"
+                  >
+                    Derby.
+                  </a>
+                </p>
+              </div>
+            </div>
+
             <div>
               <iframe
                 className="w-screen p-0.5 md:max-w-md"

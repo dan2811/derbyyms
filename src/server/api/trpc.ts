@@ -14,6 +14,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
+import { adminRateLimit, authedRateLimit, publicRateLimit } from "./rateLimiter";
 
 /**
  * 1. CONTEXT
@@ -25,6 +26,7 @@ import { prisma } from "~/server/db";
 
 interface CreateContextOptions {
   session: Session | null;
+  ip: string;
 }
 
 /**
@@ -40,6 +42,7 @@ interface CreateContextOptions {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
+    ip: opts.ip,
     prisma,
   };
 };
@@ -52,12 +55,18 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  */
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
+  //extract IP address from the request
+  let ip = req.headers["x-real-ip"] ?? req.socket.remoteAddress;
+  if (Array.isArray(ip)) {
+    ip = ip[0];
+  }
 
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
 
   return createInnerTRPCContext({
     session,
+    ip: ip ?? "",
   });
 };
 
@@ -83,6 +92,32 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   },
 });
 
+
+
+/** Reusable middleware that enforces users are logged in before running the procedure. */
+const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
+
+const rateLimitPublic = t.middleware(async ({ ctx, next }) => {
+  await publicRateLimit(ctx.ip);
+  return next();
+});
+
+const rateLimitAuthed = t.middleware(async ({ ctx, next }) => {
+  await authedRateLimit(ctx.session?.user.id);
+  return next();
+});
+
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
@@ -104,20 +139,8 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure;
+export const publicProcedure = t.procedure.use(rateLimitPublic);
 
-/** Reusable middleware that enforces users are logged in before running the procedure. */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session?.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-  return next({
-    ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
-    },
-  });
-});
 
 /**
  * Protected (authenticated) procedure
@@ -127,4 +150,4 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedProcedure = t.procedure.use(enforceUserIsAuthed).use(rateLimitAuthed);
