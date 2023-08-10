@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Footer } from "~/components/Footer";
-import ThemedCard from "~/components/themedCard";
+import ThemedCard from "~/components/ThemedCard";
 import { parseMinsPastMidnight } from "~/helpers/time";
 import { api } from "~/utils/api";
 
