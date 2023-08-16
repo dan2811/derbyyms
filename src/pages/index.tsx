@@ -1,155 +1,133 @@
 "use client";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import FadeInView from "~/components/FadeInView";
 import { Footer } from "~/components/Footer";
-import ThemedCard from "~/components/themedCard";
+import { Navbar } from "~/components/NavBar";
+import jmcStudents from "../assets/jmc-students.png";
+// import ThemedCard from "~/components/themedCard";
 import { parseMinsPastMidnight } from "~/helpers/time";
 import { api } from "~/utils/api";
+import { BsChevronDoubleDown } from "react-icons/bs";
+import { CustomHead } from "~/components/CustomHead";
 
 export default function Home() {
   const googleMapsLink =
     "https://www.google.com/maps/place/Derby+Yamaha+Music+School/@52.910254,-1.4516132,17z/data=!3m1!4b1!4m6!3m5!1s0x4879f10070bf048b:0x3f2160201caaf381!8m2!3d52.910254!4d-1.4516132!16s%2Fg%2F1tfkf37x?entry=ttu";
 
   const { data, isLoading } = api.day.getOpeningTimes.useQuery();
-  const [scrollY, setScrollY] = useState(0);
-  const ref = useRef<HTMLElement>(null);
+
+  const [mousePos, setMousePos] = useState({ x: 50, y: 0 });
+
+  const roundToNearest5 = (x: number) => Math.ceil(x / 5) * 5;
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
+    const handleMouseMove = (event: MouseEvent) => {
+      const totalWidth = event.view?.outerWidth;
+      if (totalWidth) {
+        const xPercentage: number = (event.clientX / totalWidth) * 100;
+        console.log(roundToNearest5(xPercentage));
+        if (xPercentage > 80) {
+          setMousePos({ x: 80, y: event.clientY });
+          return;
+        }
+        if (xPercentage < 20) {
+          setMousePos({ x: 20, y: event.clientY });
+          return;
+        }
+        setMousePos({ x: roundToNearest5(xPercentage), y: event.clientY });
+      }
     };
-
-    const element = ref.current;
-    if (element !== null) {
-      element.addEventListener("scroll", handleScroll);
-      return () => {
-        element.removeEventListener("scroll", handleScroll);
-      };
-    }
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return (
     <>
-      <Head>
-        <title>Derby YMS - Home</title>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="robots" content="noindex,nofollow" />
-        {/* search engine description */}
-        <meta
-          property="description"
-          content="High quality professional music tuition in Derby"
-        />
-        {/* //Link preview title */}
-        <meta property="og:title" content="Derby Yamaha Music School"></meta>
-        {/* Link preview description */}
-        <meta
-          property="og:description"
-          content="High quality professional music tuition in Derby"
-        />
-      </Head>
-      <main
-        ref={ref}
-        className="h-screen w-screen snap-y snap-mandatory overflow-y-scroll"
-      >
-        {/* Left side content */}
+      <CustomHead />
+      <main className="h-full w-full overflow-y-hidden">
+        <div className="h-screen w-full snap-y snap-mandatory overflow-y-scroll">
+          <div className="flex h-full w-full snap-start flex-col items-center justify-start md:gap-52 md:pt-8">
+            <p
+              className={`w-full select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/80 via-${mousePos.x}% to-violet-900/80 to-90% 
+                  bg-clip-text p-2 text-center text-8xl font-bold text-transparent`}
+            >
+              Professional Music Tuition in{" "}
+              <a
+                className="cursor-pointer hover:text-violet-600"
+                href={googleMapsLink}
+                target="_blank"
+              >
+                Derby.
+              </a>
+            </p>
+            <Link
+              href="/taster"
+              className="max-w-xs rounded-full bg-gradient-to-r from-violet-900/80 to-pink-400/80 p-2 pl-5 pr-5 text-center text-white shadow-md"
+            >
+              Free Taster Lesson
+            </Link>
 
-        <div className="flex h-screen w-1/2 snap-start items-start justify-center pt-8">
-          <div className="h-1/2 w-3/4">Nice image here</div>
-        </div>
+            <a href="#begin">
+              <BsChevronDoubleDown
+                className="animate-bounce text-violet-900/80"
+                size={50}
+              />
+            </a>
+          </div>
 
-        <div className="flex h-screen w-1/2 snap-start items-start justify-center pt-8">
-          <div className="h-1/2 w-3/4">
-            <ThemedCard>
-              <p className="text-8xl font-bold">Begin</p>
-              <p>
-                Whether you're a beginner or an experienced player, 4 or 94, you
-                can develop your talent quickly and enjoyably with our tried and
-                tested, high quality educational program, developed by the world
-                leader in music - Yamaha.
-              </p>
-            </ThemedCard>
-          </div>
-        </div>
-        <div className="flex h-screen w-1/2 snap-start items-start justify-center pt-8">
-          <div className="h-1/2 w-3/4">
-            <ThemedCard>
-              <p className="text-8xl font-bold">Belong</p>
-              <p>
-                Since 1984, we have created a diverse range of talented students
-                that have evolved into a musical family. It is our warm and
-                inviting atmosphere in our classes and around our building that
-                makes them feel comfortable enough to flourish to their full
-                potential.
-              </p>
-            </ThemedCard>
-          </div>
-        </div>
-        <div className="flex h-screen w-1/2 snap-start items-start justify-center pt-8">
-          <div className="h-1/2 w-3/4">
-            <ThemedCard>
-              <p className="text-8xl font-bold">Become</p>
-              <p>
-                When you or your child enrol on a Yamaha Music course, you are
-                not only being given the privilege of being able to develop your
-                technical musical skills. You will be presented with unique
-                performance opportunities too! These performances allow the
-                student to develop a plethora of life skills as well as showcase
-                all of the hard work they have put into honing their craft.
-              </p>
-            </ThemedCard>
-          </div>
-        </div>
-        <div className=" h-screen w-screen snap-start border-y-8 border-cyan-300">
-          Section 4
-        </div>
-        <div className=" h-screen w-screen snap-start border-y-8 border-cyan-300">
-          Section 5
-        </div>
-        <div className=" h-screen w-screen snap-start border-y-8 border-cyan-300">
-          Section 6
-        </div>
-        <div className=" h-screen snap-start border-y-8 border-cyan-300">
-          Section 7
-        </div>
-        <div className=" h-screen snap-start border-y-8 border-cyan-300">
-          Section 8
-        </div>
-        <div className=" h-screen snap-start border-y-8 border-cyan-300">
-          Section 9
-        </div>
-        <div className=" h-screen snap-start border-y-8 border-cyan-300">
-          Section 10
-        </div>
-        <div className=" h-screen snap-start border-y-8 border-cyan-300">
-          Section 11
-        </div>
-        <div className="fixed right-0 top-0 -z-40 flex h-screen w-1/2 place-content-center">
-          <div className="w-1/3 place-self-center">
-            <div className="flex h-full flex-col items-center justify-center">
-              <div className="mb-4">
-                <p className="-z-50 select-none text-8xl font-bold">
-                  Professional Music Tuition in{" "}
-                  <a
-                    className="cursor-pointer hover:text-violet-600"
-                    href={googleMapsLink}
-                    target="_blank"
-                  >
-                    Derby.
-                  </a>
+          <FadeInView>
+            <div
+              id="begin"
+              className="flex h-screen w-1/2 snap-start items-start justify-center pt-8"
+            >
+              <div className="h-1/2 w-3/4">
+                <p className="text-8xl font-bold">Begin</p>
+                <p>
+                  Whether you&apos;re a beginner or an experienced player, 4 or
+                  94, you can develop your talent quickly and enjoyably with our
+                  tried and tested, high quality educational program, developed
+                  by the world leader in music - Yamaha.
                 </p>
               </div>
-              <div className="z-50 flex w-full place-content-center pt-10">
-                <Link
-                  href="/taster"
-                  className="rounded-full bg-gradient-to-r from-violet-900/80 to-pink-400/80 p-2 pl-5 pr-5 text-white shadow-md"
-                >
-                  Free Taster Lesson
-                </Link>
+            </div>
+          </FadeInView>
+          <FadeInView>
+            <div className="flex h-screen w-1/2 snap-start items-start justify-center pt-8">
+              <div className="h-1/2 w-3/4">
+                <p className="text-8xl font-bold">Belong</p>
+                <p>
+                  Since 1984, we have created a diverse range of talented
+                  students that have evolved into a musical family. It is our
+                  warm and inviting atmosphere in our classes and around our
+                  building that makes them feel comfortable enough to flourish
+                  to their full potential.
+                </p>
               </div>
             </div>
-          </div>
+          </FadeInView>
+          <FadeInView>
+            <div className="flex h-screen w-1/2 snap-start items-start justify-center pt-8">
+              <div className="h-1/2 w-3/4">
+                <p className="text-8xl font-bold">Become</p>
+                <p>
+                  When you or your child enrol on a Yamaha Music course, you are
+                  not only being given the privilege of being able to develop
+                  your technical musical skills. You will be presented with
+                  unique performance opportunities too! These performances allow
+                  the student to develop a plethora of life skills as well as
+                  showcase all of the hard work they have put into honing their
+                  craft.
+                </p>
+              </div>
+            </div>
+          </FadeInView>
         </div>
+
         {/* <div className="flex w-full flex-col"> */}
         {/* <ThemedCard>
               <p className="select-none text-6xl font-bold">
