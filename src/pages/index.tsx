@@ -12,6 +12,7 @@ import { parseMinsPastMidnight } from "~/helpers/time";
 import { api } from "~/utils/api";
 import { BsChevronDoubleDown } from "react-icons/bs";
 import { CustomHead } from "~/components/CustomHead";
+import { Layout } from "~/components/Layout";
 
 export default function Home() {
   const googleMapsLink =
@@ -49,12 +50,12 @@ export default function Home() {
   return (
     <>
       <CustomHead />
-      <main className="h-full w-full overflow-y-hidden">
-        <div className="h-screen w-full snap-y snap-mandatory overflow-y-scroll">
-          <div className="flex h-full w-full snap-start flex-col items-center justify-start md:gap-52 md:pt-8">
+      <Layout>
+        <article className="flex h-full w-full snap-y snap-mandatory flex-col overflow-y-scroll scroll-smooth">
+          <section className="flex h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around">
             <p
-              className={`w-full select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/80 via-${mousePos.x}% to-violet-900/80 to-90% 
-                  bg-clip-text p-2 text-center text-8xl font-bold text-transparent`}
+              className={`h-fit w-fit select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/80 p-2 via-${mousePos.x}% to-violet-900/80 to-90% 
+                bg-clip-text text-center text-6xl font-bold text-transparent`}
             >
               Professional Music Tuition in{" "}
               <a
@@ -78,15 +79,20 @@ export default function Home() {
                 size={50}
               />
             </a>
-          </div>
+          </section>
 
           <FadeInView>
-            <div
+            <section
               id="begin"
-              className="flex h-screen w-1/2 snap-start items-start justify-center pt-8"
+              className="flex  h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around"
             >
-              <div className="h-1/2 w-3/4">
-                <p className="text-8xl font-bold">Begin</p>
+              <div className="mt-24 flex h-1/6 w-3/4 flex-col justify-center gap-y-6">
+                <p
+                  className={`h-fit w-fit select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/60 p-2 via-${mousePos.x}% to-violet-900/80 to-90% 
+                    bg-clip-text text-center text-8xl font-bold text-transparent`}
+                >
+                  Begin
+                </p>
                 <p>
                   Whether you&apos;re a beginner or an experienced player, 4 or
                   94, you can develop your talent quickly and enjoyably with our
@@ -94,11 +100,13 @@ export default function Home() {
                   by the world leader in music - Yamaha.
                 </p>
               </div>
-            </div>
+
+              <Image src={jmcStudents} alt="Keyboard students" />
+            </section>
           </FadeInView>
           <FadeInView>
-            <div className="flex h-screen w-1/2 snap-start items-start justify-center pt-8">
-              <div className="h-1/2 w-3/4">
+            <section className="flex  h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around">
+              <div className="flex h-1/2 w-3/4 flex-col justify-between">
                 <p className="text-8xl font-bold">Belong</p>
                 <p>
                   Since 1984, we have created a diverse range of talented
@@ -108,10 +116,10 @@ export default function Home() {
                   to their full potential.
                 </p>
               </div>
-            </div>
+            </section>
           </FadeInView>
           <FadeInView>
-            <div className="flex h-screen w-1/2 snap-start items-start justify-center pt-8">
+            <section className="flex  h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around">
               <div className="h-1/2 w-3/4">
                 <p className="text-8xl font-bold">Become</p>
                 <p>
@@ -124,9 +132,9 @@ export default function Home() {
                   craft.
                 </p>
               </div>
-            </div>
+            </section>
           </FadeInView>
-        </div>
+        </article>
 
         {/* <div className="flex w-full flex-col"> */}
         {/* <ThemedCard>
@@ -194,7 +202,7 @@ export default function Home() {
           </div>
         </div>
         <Footer /> */}
-      </main>
+      </Layout>
     </>
   );
 }

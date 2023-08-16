@@ -1,13 +1,14 @@
-import Footer from "./Footer";
 import type { ReactNode } from "react";
 import { Navbar } from "./NavBar";
+import { Footer } from "./Footer";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <>
+    <div className="flex h-screen flex-col">
       <Navbar />
-      <main>{children}</main>
+      {/* margin and padding needed to avoid overlap on header and footer */}
+      <main className="mt-28 flex flex-grow pb-10">{children}</main>
       <Footer />
-    </>
+    </div>
   );
-}
+};

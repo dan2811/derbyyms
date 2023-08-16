@@ -34,9 +34,9 @@ export const Navbar = () => {
     };
   return (
     <nav
-      className="sticky top-0 z-10 flex flex-wrap items-center 
-      justify-between overflow-y-hidden bg-violet-900/80 p-4
-      text-slate-300 backdrop-blur backdrop-filter"
+      className="fixed top-0 z-50 flex h-28 w-full flex-wrap
+      items-center justify-between overflow-hidden bg-violet-900/80
+      pl-4 pr-4 text-slate-300 backdrop-blur backdrop-filter"
     >
       <div onClick={() => setOpen(!open)} className="cursor-pointer">
         <Image

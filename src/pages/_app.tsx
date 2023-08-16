@@ -31,7 +31,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <link rel="icon" href="/favicon.ico" />
         <meta name="robots" content="noindex,nofollow" />
       </Head>
-      <Navbar />
       <Component {...pageProps} />
     </SessionProvider>
   );
