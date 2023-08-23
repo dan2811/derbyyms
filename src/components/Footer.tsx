@@ -43,7 +43,7 @@ export const Footer = () => {
       >
         <div
           className="visible absolute -top-10 left-0 right-0 flex flex-col bg-violet-900/80 backdrop-blur backdrop-filter"
-          onClick={() => toggleDrawer(true)}
+          // onClick={() => toggleDrawer(!open)}
         >
           <MdDragHandle
             size={40}

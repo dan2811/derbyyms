@@ -1,15 +1,12 @@
 "use client";
-import Head from "next/head";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import FadeInView from "~/components/FadeInView";
-import { Footer } from "~/components/Footer";
-import { Navbar } from "~/components/NavBar";
-import jmcStudents from "../assets/jmc-students.png";
-// import ThemedCard from "~/components/themedCard";
-import { parseMinsPastMidnight } from "~/helpers/time";
-import { api } from "~/utils/api";
+import jmcStudents from "../assets/keys/jmc-students.png";
+import drums from "../assets/drums/drums.webp";
+import vocals from "../assets/vocals/vocals.webp";
+// import { parseMinsPastMidnight } from "~/helpers/time";
 import { BsChevronDoubleDown } from "react-icons/bs";
 import { CustomHead } from "~/components/CustomHead";
 import { Layout } from "~/components/Layout";
@@ -18,7 +15,7 @@ export default function Home() {
   const googleMapsLink =
     "https://www.google.com/maps/place/Derby+Yamaha+Music+School/@52.910254,-1.4516132,17z/data=!3m1!4b1!4m6!3m5!1s0x4879f10070bf048b:0x3f2160201caaf381!8m2!3d52.910254!4d-1.4516132!16s%2Fg%2F1tfkf37x?entry=ttu";
 
-  const { data, isLoading } = api.day.getOpeningTimes.useQuery();
+  // const { data, isLoading } = api.day.getOpeningTimes.useQuery();
 
   const [mousePos, setMousePos] = useState({ x: 50, y: 0 });
 
@@ -51,11 +48,11 @@ export default function Home() {
     <>
       <CustomHead />
       <Layout>
-        <article className="flex h-full w-full snap-y snap-mandatory flex-col overflow-y-scroll scroll-smooth">
-          <section className="flex h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around">
+        <article className="flex h-full w-full snap-y snap-mandatory flex-col overflow-y-scroll scroll-smooth bg-violet-50">
+          <section className="flex h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around overflow-y-hidden">
             <p
-              className={`h-fit w-fit select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/80 p-2 via-${mousePos.x}% to-violet-900/80 to-90% 
-                bg-clip-text text-center text-6xl font-bold text-transparent`}
+              className={`select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/80 p-2 via-${mousePos.x}% to-violet-900/80 to-90% 
+                bg-clip-text text-center text-6xl font-bold text-transparent sm:text-8xl md:text-9xl`}
             >
               Professional Music Tuition in{" "}
               <a
@@ -73,7 +70,7 @@ export default function Home() {
               Free Taster Lesson
             </Link>
 
-            <a href="#begin">
+            <a href="#Begin">
               <BsChevronDoubleDown
                 className="animate-bounce text-violet-900/80"
                 size={50}
@@ -81,59 +78,41 @@ export default function Home() {
             </a>
           </section>
 
-          <FadeInView>
-            <section
-              id="begin"
-              className="flex  h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around"
-            >
-              <div className="mt-24 flex h-1/6 w-3/4 flex-col justify-center gap-y-6">
-                <p
-                  className={`h-fit w-fit select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/60 p-2 via-${mousePos.x}% to-violet-900/80 to-90% 
-                    bg-clip-text text-center text-8xl font-bold text-transparent`}
-                >
-                  Begin
-                </p>
-                <p>
-                  Whether you&apos;re a beginner or an experienced player, 4 or
-                  94, you can develop your talent quickly and enjoyably with our
-                  tried and tested, high quality educational program, developed
-                  by the world leader in music - Yamaha.
-                </p>
-              </div>
+          <InfoCard
+            mouseX={mousePos.x}
+            heading="Begin"
+            description="Whether you're a beginner or an experienced player, 4 or 94,
+              you can develop your talent quickly and enjoyably with our tried and
+              tested, high quality educational program, developed by the world
+              leader in music - Yamaha."
+            img={jmcStudents}
+            alt="Keyboard students"
+          />
+          <InfoCard
+            mouseX={mousePos.x}
+            heading="Belong"
+            description="Since 1984, we have created a diverse range of talented
+              students that have evolved into a musical family. It is our
+              warm and inviting atmosphere in our classes and around our
+              building that makes them feel comfortable enough to flourish
+              to their full potential."
+            img={drums}
+            alt="some shit"
+          />
 
-              <Image src={jmcStudents} alt="Keyboard students" />
-            </section>
-          </FadeInView>
-          <FadeInView>
-            <section className="flex  h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around">
-              <div className="flex h-1/2 w-3/4 flex-col justify-between">
-                <p className="text-8xl font-bold">Belong</p>
-                <p>
-                  Since 1984, we have created a diverse range of talented
-                  students that have evolved into a musical family. It is our
-                  warm and inviting atmosphere in our classes and around our
-                  building that makes them feel comfortable enough to flourish
-                  to their full potential.
-                </p>
-              </div>
-            </section>
-          </FadeInView>
-          <FadeInView>
-            <section className="flex  h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around">
-              <div className="h-1/2 w-3/4">
-                <p className="text-8xl font-bold">Become</p>
-                <p>
-                  When you or your child enrol on a Yamaha Music course, you are
-                  not only being given the privilege of being able to develop
-                  your technical musical skills. You will be presented with
-                  unique performance opportunities too! These performances allow
-                  the student to develop a plethora of life skills as well as
-                  showcase all of the hard work they have put into honing their
-                  craft.
-                </p>
-              </div>
-            </section>
-          </FadeInView>
+          <InfoCard
+            mouseX={mousePos.x}
+            heading="Become"
+            description="When you or your child enrol on a Yamaha Music course, you are
+              not only being given the privilege of being able to develop
+              your technical musical skills. You will be presented with
+              unique performance opportunities too! These performances allow
+              the student to develop a plethora of life skills as well as
+              showcase all of the hard work they have put into honing their
+              craft."
+            img={vocals}
+            alt="some shit"
+          />
         </article>
 
         {/* <div className="flex w-full flex-col"> */}
@@ -206,3 +185,46 @@ export default function Home() {
     </>
   );
 }
+
+interface InfoCardProps {
+  mouseX: number;
+  heading: string;
+  description: string;
+  img: StaticImageData;
+  alt: string;
+}
+
+const InfoCard = ({
+  mouseX,
+  heading,
+  description,
+  img,
+  alt,
+}: InfoCardProps) => {
+  return (
+    <FadeInView>
+      <section
+        id={heading}
+        className="flex  h-[calc(100vh-12rem)] w-full snap-center flex-col items-center justify-around"
+      >
+        <div className="mt-24 flex h-1/6 w-3/4 flex-col justify-center gap-y-6">
+          <p
+            className={`h-fit w-fit select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/60 p-2 via-${mouseX}% to-violet-900/80 to-90% 
+          bg-clip-text text-center text-8xl font-bold text-transparent`}
+          >
+            {heading}
+          </p>
+          <p className="max-w-md">{description}</p>
+          <Link
+            href="/taster"
+            className="max-w-xs rounded-full bg-gradient-to-r from-violet-900/80 to-pink-400/80 p-2 pl-5 pr-5 text-center text-white shadow-md"
+          >
+            Free Taster Lesson
+          </Link>
+        </div>
+
+        <Image src={img} alt={alt} />
+      </section>
+    </FadeInView>
+  );
+};
