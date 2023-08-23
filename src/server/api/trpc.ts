@@ -14,7 +14,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
-import { adminRateLimit, authedRateLimit, publicRateLimit } from "./rateLimiter";
+import { authedRateLimit, publicRateLimit } from "./rateLimiter";
 
 /**
  * 1. CONTEXT

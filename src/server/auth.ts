@@ -3,9 +3,10 @@ import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
   type NextAuthOptions,
-  type DefaultSession,
+  type DefaultUser,
 } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import { type JWT } from "next-auth/jwt";
+import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
 import { prisma } from "~/server/db";
 
 /**
@@ -14,21 +15,25 @@ import { prisma } from "~/server/db";
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: DefaultSession["user"] & {
-      id: string;
-      // ...other properties
-      // role: UserRole;
-    };
-  }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+export enum Role {
+  pupil = "pupil",
+  teacher = "teacher",
+  admin = "admin",
+  superAdmin = "superAdmin"
 }
-
+// common interface for JWT and Session
+interface User extends DefaultUser {
+  role?: Role;
+}
+declare module "next-auth" {
+  interface Session {
+    user: User;
+  }
+}
+declare module "next-auth/jwt" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface JWT extends User { }
+}
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -36,19 +41,43 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    jwt({ token, user }: { token: JWT; user: User; }) {
+      if (user) {
+        token.role = user.role;
+      };
+      return token;
+    },
+    session({ session, token }) {
+      console.log("session", session, "token", token);
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
+        session.user.role = Role.pupil;
+      }
+      return session;
+    }
+  },
+  theme: {
+    brandColor: "#9760f2",
+    buttonText: "Sign in with Google",
+  },
+  session: {
+    strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      profile: (profile: GoogleProfile) => {
+        console.log("profile", profile);
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          role: "pupil"
+        };
+      }
     })
     /**
      * ...add more providers here.
