@@ -46,12 +46,20 @@ model User {
   email         String?         @unique
   emailVerified DateTime?
   image         String?
-  role          String          @default("pupil")
+  role          Role            @default(pupil)
   accounts      Account[]
   sessions      Session[]
   tasterEnquiry TasterEnquiry[]
   Pupil         Pupil?
   pupilId       String?
+}
+
+enum Role {
+  pupil
+  teacher
+  receptionist
+  admin
+  superAdmin
 }
 
 model VerificationToken {
@@ -194,6 +202,7 @@ model Instrument {
   name     String
   courses  Course[]
   lesson   Lesson[]
+  rooms Room[]
 }
 
 model Course {
@@ -208,6 +217,7 @@ model Course {
   privateLessonsAvailable Boolean
   isPublic                Boolean
   Lesson                  Lesson[]
+  youtubeVideoId          String?
 
   @@index([instrumentId])
 }
@@ -245,6 +255,13 @@ model GradeResult {
 
   @@index([pupilId])
   @@index([gradeId])
+}
+
+model Room {
+  id   String @id @default(cuid())
+  name String @unique
+  instruments Instrument[]
+  pupilCapacity Int
 }
 
 model Day {
