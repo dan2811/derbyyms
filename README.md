@@ -1,3 +1,5 @@
+[BACKLOG](https://trello.com/b/OTKhjxOt/yamaha-pupil-management)
+
 # Development
 
 • Spin up locally by running `yarn start`
@@ -13,16 +15,3 @@
 - Axiom - Logs
 - Upstash - Rate limiting
 - Vercel - Deployment
-
-
-### TODO
-• Implement other auth providers
-• Send emails on taster form submission
-• Make customer facing pages - once complete we could deploy to prod and get the domain switched over then commence admin console dev using CI/CD.
-• Show link to admin console if user's role is not set to Pupil
-• Create admin console
-
-## Feature ideas
-
-- Playable keyboard
-- Happy birthday emails from the student's teachers
