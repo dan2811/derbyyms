@@ -49,8 +49,8 @@ export default function Home() {
       <CustomHead />
       <Layout>
         <article className="flex h-full w-full snap-y snap-mandatory flex-col overflow-y-scroll scroll-smooth bg-violet-50">
-          <section className="flex h-[calc(100vh-12rem)] w-full snap-start flex-col items-center justify-around overflow-y-hidden">
-            <p
+          <section className="flex h-[calc(100vh-8rem)] w-full snap-start flex-col items-center justify-around overflow-y-hidden">
+            <h1
               className={`select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/80 p-2 via-${mousePos.x}% to-violet-900/80 to-90% 
                 bg-clip-text text-center text-6xl font-bold text-transparent sm:text-8xl md:text-9xl`}
             >
@@ -62,7 +62,7 @@ export default function Home() {
               >
                 Derby.
               </a>
-            </p>
+            </h1>
             <Link
               href="/taster"
               className="max-w-xs rounded-full bg-gradient-to-r from-violet-900/80 to-pink-400/80 p-2 pl-5 pr-5 text-center text-white shadow-md"
@@ -202,29 +202,28 @@ const InfoCard = ({
   alt,
 }: InfoCardProps) => {
   return (
-    <FadeInView>
-      <section
-        id={heading}
-        className="flex  h-[calc(100vh-12rem)] w-full snap-center flex-col items-center justify-around"
-      >
-        <div className="mt-24 flex h-1/6 w-3/4 flex-col justify-center gap-y-6">
-          <p
-            className={`h-fit w-fit select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/60 p-2 via-${mouseX}% to-violet-900/80 to-90% 
+    <section
+      id={heading}
+      className="flex h-[calc(100vh-8rem)] w-full snap-start flex-col items-center gap-6 py-2"
+    >
+      <h2
+        className={`h-fit w-fit select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/60 py-2 via-${mouseX}% to-violet-900/80 to-90% 
           bg-clip-text text-center text-8xl font-bold text-transparent`}
-          >
-            {heading}
-          </p>
-          <p className="max-w-md">{description}</p>
-          <Link
-            href="/taster"
-            className="max-w-xs rounded-full bg-gradient-to-r from-violet-900/80 to-pink-400/80 p-2 pl-5 pr-5 text-center text-white shadow-md"
-          >
-            Free Taster Lesson
-          </Link>
-        </div>
-
-        <Image src={img} alt={alt} />
-      </section>
-    </FadeInView>
+      >
+        {heading}
+      </h2>
+      <p className="max-w-md px-10 text-justify">{description}</p>
+      <Link
+        href="/taster"
+        className="max-w-xs rounded-full bg-gradient-to-r from-violet-900/80 to-pink-400/80 px-5 py-2 text-center text-white shadow-md"
+      >
+        Free Taster Lesson
+      </Link>
+      <Image
+        src={img}
+        alt={alt}
+        className="h-fit w-auto max-w-sm overflow-clip"
+      />
+    </section>
   );
 };
