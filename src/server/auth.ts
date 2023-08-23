@@ -8,6 +8,7 @@ import {
 import { type JWT } from "next-auth/jwt";
 import GoogleProvider, { type GoogleProfile } from "next-auth/providers/google";
 import { prisma } from "~/server/db";
+import { Role } from "~/types";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -15,12 +16,7 @@ import { prisma } from "~/server/db";
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
-export enum Role {
-  pupil = "pupil",
-  teacher = "teacher",
-  admin = "admin",
-  superAdmin = "superAdmin"
-}
+
 // common interface for JWT and Session
 interface User extends DefaultUser {
   role?: Role;

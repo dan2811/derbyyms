@@ -1,4 +1,5 @@
 import { withAuth } from "next-auth/middleware";
+import { Role } from "./types";
 
 export default withAuth({
     callbacks: {
@@ -13,7 +14,7 @@ export default withAuth({
             // route which requires a specific role
             const path = req.nextUrl.pathname;
             if (path.startsWith("/admin")) {
-                if (token?.role === "admin") return true;
+                if (token?.role === Role.admin) return true;
                 return false;
             }
 
