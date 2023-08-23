@@ -9,7 +9,6 @@ import { Toaster } from "react-hot-toast";
 import { useReportWebVitals } from "next-axiom";
 export { useReportWebVitals } from "next-axiom";
 import { Analytics } from "@vercel/analytics/react";
-import { Navbar } from "~/components/NavBar";
 
 export const merriweather = Oswald({
   weight: ["300", "400", "500", "700"],

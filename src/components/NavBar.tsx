@@ -42,14 +42,14 @@ export const Navbar = () => {
         <Image
           src={Logo as string}
           alt="Yamaha Music Logo"
-          className="h-12 p-0"
+          className="h-12 w-12 p-0"
         />
         <p className="w-full text-center">MENU</p>
       </div>
       <Image
         src={MakeWavesLogo as string}
         alt="Yamaha - make waves"
-        className="hidden h-20 md:block"
+        className="hidden h-20 w-52 md:block"
       />
       <Login />
       <SwipeableDrawer
