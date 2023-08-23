@@ -2,6 +2,7 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Footer } from "~/components/Footer";
+import { Layout } from "~/components/Layout";
 import AdultPupilForm from "~/components/taster/AdultPupilForm";
 import FormWrapper from "~/components/taster/FormWrapper";
 import ParentAndPupilForm from "~/components/taster/ParentAndPupilForm";
@@ -27,7 +28,7 @@ const TasterForm = () => {
   if (session.status === "unauthenticated") return signIn();
 
   return (
-    <>
+    <Layout>
       <div className="mb-8 mt-8 flex h-fit w-full justify-center">
         <div className="flex flex-col">
           <FormWrapper>
@@ -80,7 +81,7 @@ const TasterForm = () => {
           )}
         </div>
       </div>
-    </>
+    </Layout>
   );
 };
 
