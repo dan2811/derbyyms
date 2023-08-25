@@ -48,7 +48,7 @@ export default function Home() {
     <>
       <CustomHead />
       <Layout>
-        <article className="flex h-full w-full snap-y snap-mandatory flex-col overflow-y-scroll scroll-smooth bg-violet-50">
+        <article className="flex h-full w-full snap-y snap-mandatory flex-col overflow-y-scroll scroll-smooth bg-background">
           <section className="flex h-[calc(100vh-8rem)] w-full snap-start flex-col items-center justify-around overflow-y-hidden">
             <h1
               className={`select-none bg-gradient-to-r from-violet-900/80 from-10% via-pink-400/80 p-2 via-${mousePos.x}% to-violet-900/80 to-90% 

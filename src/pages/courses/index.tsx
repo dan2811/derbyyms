@@ -12,7 +12,7 @@ const index = () => {
   if (isLoading) return <CircularProgress />;
   return (
     <Layout>
-      <div className="bg-violet-50">
+      <div className="bg-background">
         <Image src={courses} alt="courses" className="" priority />
         {data?.map((course) => (
           <Course data={course} key={course.name} />
