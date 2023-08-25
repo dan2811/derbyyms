@@ -34,22 +34,25 @@ export const Navbar = () => {
     };
   return (
     <nav
-      className="fixed top-0 z-50 flex h-28 w-full flex-wrap
-      items-center justify-between overflow-hidden bg-violet-900/80
+      className="fixed top-0 z-50 flex h-28 w-full
+      items-center overflow-hidden bg-violet-900/80
       pl-4 pr-4 text-slate-300 backdrop-blur backdrop-filter"
     >
-      <div onClick={() => setOpen(!open)} className="cursor-pointer">
+      <div
+        onClick={() => setOpen(!open)}
+        className="flex flex-1 cursor-pointer flex-col justify-start"
+      >
         <Image
           src={Logo as string}
           alt="Yamaha Music Logo"
           className="h-12 w-12 p-0"
         />
-        <p className="w-full text-center">MENU</p>
+        <p>MENU</p>
       </div>
       <Image
         src={MakeWavesLogo as string}
         alt="Yamaha - make waves"
-        className="hidden h-20 w-52 md:block"
+        className="hidden h-20 w-52 flex-1 md:flex "
       />
       <Login />
       <SwipeableDrawer
