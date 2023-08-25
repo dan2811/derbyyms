@@ -9,7 +9,7 @@ const Login = () => {
   const { data: session } = useSession();
   if (session) {
     return (
-      <div className="flex">
+      <div className="flex flex-1 justify-end">
         <Link href="/profile">
           <div className="group flex items-center">
             <Image
