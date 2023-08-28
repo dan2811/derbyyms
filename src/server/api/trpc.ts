@@ -107,6 +107,23 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
+const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  const adminRoles = ["admin", "superadmin"];
+  if (!adminRoles.includes(ctx.session?.user.role?.toString() ?? "")) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
+
 
 const rateLimitPublic = t.middleware(async ({ ctx, next }) => {
   await publicRateLimit(ctx.ip);
@@ -151,3 +168,5 @@ export const publicProcedure = t.procedure.use(rateLimitPublic);
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed).use(rateLimitAuthed);
+
+export const adminProcedure = t.procedure.use(enforceUserIsAdmin);
