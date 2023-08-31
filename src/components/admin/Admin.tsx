@@ -18,6 +18,7 @@ import {
 import { ReactQueryDevtools } from "react-query/devtools";
 import { getDataProvider } from "./dataprovider";
 import { AppBar, TitlePortal, InspectorButton } from "react-admin";
+import { api } from "~/utils/api";
 
 export const MyLayout = (props: LayoutProps) => (
   <>
@@ -62,6 +63,18 @@ const MyAppBar = () => (
 
 const AdminApp = () => {
   const dataProvider = getDataProvider();
+
+
+  const apiCallConstructor = (route: keyof typeof api, method: string) => {
+    const { data } = api[route][method].useQuery();
+    return data;
+  };
+
+  // THIS IS THE CORRECT CALL SYNTAX FOR ROUTES CREATED SPECIFICALLY FOR REACT ADMIN
+  // const res = api.user.getOne.useQuery({
+  //   id: "cllncmw5v0004ls7mgtpvqyyo",
+  //   select: ["id"],
+  // });
   return (
     <Admin dataProvider={dataProvider} layout={MyLayout}>
       <Resource name="user" show={UserShow} list={UserList} />
