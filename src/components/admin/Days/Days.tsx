@@ -30,8 +30,8 @@ export const DayEdit = () => {
         <SimpleForm>
           <TextField source="id" />
           <TextInput source="name" />
-          <TimeInput source="openingTime" />
-          <TimeInput
+          {/* <TimeInput source="openingTime" /> */}
+          {/* <TimeInput
             source="closingTime"
             format={(value: number) => {
               const date = new Date(new Date().setMinutes(value));
@@ -48,7 +48,7 @@ export const DayEdit = () => {
                 minute: true,
               });
             }}
-          />
+          /> */}
         </SimpleForm>
       </Edit>
     );
