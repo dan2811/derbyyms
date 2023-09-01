@@ -65,7 +65,7 @@ export const Navbar = () => {
           role="presentation"
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
-          className="h-full bg-violet-600/80 text-slate-200"
+          className="h-screen bg-violet-600/80 text-slate-200"
         >
           <List>
             <Link href="/">

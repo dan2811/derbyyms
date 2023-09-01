@@ -3,22 +3,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import {
-  Admin,
-  Resource,
-  List,
-  TextField,
-  useRecordContext,
-  type LayoutProps,
-  Show,
-  Layout,
-  DatagridConfigurable,
-  SimpleShowLayout,
-} from "react-admin";
+import { Admin, Resource, type LayoutProps, Layout } from "react-admin";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { getDataProvider } from "./dataprovider";
 import { AppBar, TitlePortal, InspectorButton } from "react-admin";
-import { api } from "~/utils/api";
+import { dataProvider } from "ra-data-simple-prisma";
+import { DayEdit, DayList, DayShow } from "./Days/Days";
+import { PupilEdit, PupilList, PupilShow } from "./Pupils/Pupils";
+import {
+  InstrumentEdit,
+  InstrumentList,
+  InstrumentShow,
+} from "./Instruments/instruments";
+import { TeacherEdit, TeacherList, TeacherShow } from "./Teachers/Teachers";
+import PianoIcon from "@mui/icons-material/Piano";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SchoolIcon from "@mui/icons-material/School";
+import GroupsIcon from "@mui/icons-material/Groups";
 
 export const MyLayout = (props: LayoutProps) => (
   <>
@@ -26,33 +26,6 @@ export const MyLayout = (props: LayoutProps) => (
     <ReactQueryDevtools initialIsOpen={false} />
   </>
 );
-
-const UserList = () => {
-  return (
-    <List>
-      <DatagridConfigurable rowClick="show" omit={["id"]}>
-        <TextField source="id" />
-        <TextField source="name" />
-        <TextField source="fName" />
-        <TextField source="lName" />
-        <TextField source="description" />
-      </DatagridConfigurable>
-    </List>
-  );
-};
-
-const UserShow = () => {
-  const record = useRecordContext();
-  console.log(record);
-  return (
-    <Show>
-      <SimpleShowLayout>
-        <TextField source="id" />
-        <TextField source="name" />
-      </SimpleShowLayout>
-    </Show>
-  );
-};
 
 const MyAppBar = () => (
   <AppBar>
@@ -62,22 +35,40 @@ const MyAppBar = () => (
 );
 
 const AdminApp = () => {
-  const dataProvider = getDataProvider();
-
-
-  const apiCallConstructor = (route: keyof typeof api, method: string) => {
-    const { data } = api[route][method].useQuery();
-    return data;
-  };
-
-  // THIS IS THE CORRECT CALL SYNTAX FOR ROUTES CREATED SPECIFICALLY FOR REACT ADMIN
-  // const res = api.user.getOne.useQuery({
-  //   id: "cllncmw5v0004ls7mgtpvqyyo",
-  //   select: ["id"],
-  // });
   return (
-    <Admin dataProvider={dataProvider} layout={MyLayout}>
-      <Resource name="user" show={UserShow} list={UserList} />
+    <Admin dataProvider={dataProvider("/api")} layout={MyLayout}>
+      <Resource
+        name="instrument"
+        recordRepresentation="name"
+        show={InstrumentShow}
+        list={InstrumentList}
+        edit={InstrumentEdit}
+        icon={PianoIcon}
+      />
+      <Resource
+        name="day"
+        show={DayShow}
+        list={DayList}
+        edit={DayEdit}
+        recordRepresentation="name"
+        icon={AccessTimeIcon}
+      />
+      <Resource
+        recordRepresentation={(record) => `${record.fName} ${record.lName}`}
+        name="pupil"
+        show={PupilShow}
+        list={PupilList}
+        edit={PupilEdit}
+        icon={SchoolIcon}
+      />
+      <Resource
+        recordRepresentation={(record) => `${record.fName} ${record.lName}`}
+        name="teacher"
+        show={TeacherShow}
+        list={TeacherList}
+        edit={TeacherEdit}
+        icon={GroupsIcon}
+      />
     </Admin>
   );
 };

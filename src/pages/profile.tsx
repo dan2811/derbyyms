@@ -1,17 +1,19 @@
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 import React from "react";
 import { Footer } from "~/components/Footer";
 
 const Profile = () => {
-  const session = useSession();
-  const router = useRouter();
-  if (session.status === "unauthenticated") router.push("/");
+  const handleSignOut = () => {
+    const logout = async () => await signOut({ redirect: true, callbackUrl: "/" });
+    void logout();
+    redirect("/");
+  }
   return (
     <div>
       profile
-      <button onClick={() => void signOut()}>Log out</button>
+      <button onClick={handleSignOut}>Log out</button>
       <Footer />
     </div>
   );

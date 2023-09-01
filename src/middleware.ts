@@ -14,7 +14,7 @@ export default withAuth({
             // route which requires a specific role
             const path = req.nextUrl.pathname;
             if (path.startsWith("/admin")) {
-                if (token?.role === Role.admin) return true;
+                if (token?.role === Role.admin || token?.role === Role.superAdmin || token?.role === Role.teacher) return true;
                 return false;
             }
 

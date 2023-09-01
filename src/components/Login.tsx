@@ -7,9 +7,9 @@ import Link from "next/link";
 
 const Login = () => {
   const { data: session } = useSession();
-  if (session) {
     return (
       <div className="flex flex-1 justify-end">
+        {!session ? <button onClick={() => void signIn()}>Sign in</button> :
         <Link href="/profile">
           <div className="group flex items-center">
             <Image
@@ -21,15 +21,9 @@ const Login = () => {
             />
             <p className="place-self-center">{session.user.name}</p>
           </div>
-        </Link>
+        </Link>}
       </div>
     );
-  }
-  return (
-    <div>
-      <button onClick={() => void signIn()}>Sign in</button>
-    </div>
-  );
 };
 
 export default Login;

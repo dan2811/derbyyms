@@ -70,24 +70,11 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Teacher {
-  id           String         @id @default(cuid())
-  fName        String
-  lName        String
-  email        String
-  lesson       Lesson[]
-  tasterLesson TasterLesson[]
-  instrument   Instrument?    @relation(fields: [instrumentId], references: [id])
-  instrumentId String?
-
-  @@index([instrumentId])
-}
-
 model Lesson {
   id            String          @id @default(cuid())
   teacherId     String
   teacher       Teacher         @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  pupils        Pupil[]
+  pupils        PupilLesson[]
   ///start times are stored as minutes from midnight so 0 = 00:00, 60 = 01:00, 120 = 02:00 etc.
   startTime     Int
   ///end times are stored as minutes from midnight so 0 = 00:00, 60 = 01:00, 120 = 02:00 etc.
@@ -99,7 +86,7 @@ model Lesson {
   attendance    Attendance[]
   CatchupLesson CatchupLesson[]
   courseId      String?
-  course        Course?         @relation(fields: [courseId], references: [name])
+  course        Course?         @relation(fields: [courseId], references: [id])
   book          Book?           @relation(fields: [bookId], references: [id])
   grade         Grade?          @relation(fields: [gradeId], references: [id])
   courseName    String?
@@ -115,6 +102,18 @@ model Lesson {
   @@index([courseId])
   @@index([bookId])
   @@index([gradeId])
+}
+
+model PupilLesson {
+  id         String       @id @default(cuid())
+  lesson     Lesson       @relation(fields: [lessonId], references: [id])
+  lessonId   String
+  pupil      Pupil        @relation(fields: [pupilId], references: [id])
+  pupilId    String
+  attendance Attendance[]
+
+  @@index([lessonId])
+  @@index([pupilId])
 }
 
 model LessonType {
@@ -179,7 +178,7 @@ model Pupil {
   addressLine1  String?
   addressLine2  String?
   postcode      String?
-  lessons       Lesson[]
+  lessons       PupilLesson[]
   tasterLessons TasterLesson[]
   enrolled      DateTime?
   droppedOut    DateTime?
@@ -196,17 +195,52 @@ model Pupil {
   @@index([userId])
 }
 
+model Teacher {
+  id           String              @id @default(cuid())
+  fName        String
+  lName        String
+  email        String
+  phone        String
+  lesson       Lesson[]
+  tasterLesson TasterLesson[]
+  instruments  TeacherInstrument[]
+}
+
+model TeacherInstrument {
+  id           String     @id @default(cuid())
+  teacherId    String
+  teacher      Teacher    @relation(fields: [teacherId], references: [id])
+  instrument   Instrument @relation(fields: [instrumentId], references: [id])
+  instrumentId String
+
+  @@index([teacherId])
+  @@index([instrumentId])
+}
+
 model Instrument {
-  id       String    @id @default(cuid())
-  teachers Teacher[]
-  name     String
+  id       String              @id @default(cuid())
+  name     String              @unique
   courses  Course[]
   lesson   Lesson[]
-  rooms Room[]
+  rooms    InstrumentRoom[]
+  Grade    Grade[]
+  teachers TeacherInstrument[]
+}
+
+model InstrumentRoom {
+  id           String     @id @default(cuid())
+  instrumentId String
+  instrument   Instrument @relation(fields: [instrumentId], references: [id])
+  roomId       String
+  room         Room       @relation(fields: [roomId], references: [id])
+
+  @@index([instrumentId])
+  @@index([roomId])
 }
 
 model Course {
-  name                    String      @id
+  id                      String      @id @default(cuid())
+  name                    String
   instrumentId            String?
   instrument              Instrument? @relation(fields: [instrumentId], references: [id], onDelete: Cascade)
   description             String
@@ -233,15 +267,19 @@ model Book {
 }
 
 model Grade {
-  id          String        @id @default(cuid())
-  level       Int
-  examBoard   String
-  bookId      String
-  book        Book          @relation(fields: [bookId], references: [id])
-  Lesson      Lesson[]
-  GradeResult GradeResult[]
+  id           String        @id @default(cuid())
+  level        Int
+  examBoard    String
+  bookId       String?
+  instrumentId String
+  Instrument   Instrument    @relation(fields: [instrumentId], references: [id])
+  book         Book?         @relation(fields: [bookId], references: [id])
+  Lesson       Lesson[]
+  GradeResult  GradeResult[]
 
+  @@unique([level, instrumentId, examBoard])
   @@index([bookId])
+  @@index([instrumentId])
 }
 
 model GradeResult {
@@ -258,9 +296,9 @@ model GradeResult {
 }
 
 model Room {
-  id   String @id @default(cuid())
-  name String @unique
-  instruments Instrument[]
+  id            String           @id @default(cuid())
+  name          String           @unique
+  instruments   InstrumentRoom[]
   pupilCapacity Int
 }
 
@@ -282,10 +320,13 @@ model Attendance {
   date            DateTime
   CatchupLesson   CatchupLesson? @relation(fields: [catchupLessonId], references: [id])
   catchupLessonId String?
+  PupilLesson     PupilLesson?   @relation(fields: [pupilLessonId], references: [id])
+  pupilLessonId   String?
 
   @@index([pupilId])
   @@index([lessonId])
   @@index([catchupLessonId])
+  @@index([pupilLessonId])
 }
 
 model Payment {
