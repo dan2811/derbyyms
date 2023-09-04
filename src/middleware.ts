@@ -5,6 +5,8 @@ export default withAuth({
     callbacks: {
         authorized: ({ req, token }) => {
 
+            console.log("Middleware triggered");
+
             const sessionCookie = req.cookies.get("next-auth.session-token");
             console.debug("SESSION COOKIE: ", JSON.stringify(sessionCookie));
             console.debug("TOKEN: ", JSON.stringify(token));
@@ -13,8 +15,12 @@ export default withAuth({
             // Check if the middleware is processing the
             // route which requires a specific role
             const path = req.nextUrl.pathname;
+            console.log("User visiting path: ", path);
             if (path.startsWith("/admin")) {
-                if (token?.role === Role.admin || token?.role === Role.superAdmin || token?.role === Role.teacher) return true;
+                if (token?.role === Role.admin || token?.role === Role.superAdmin || token?.role === Role.teacher) {
+                    console.log("ADMIN ACCESS GRANTED TO: ", JSON.stringify(token));
+                    return true;
+                }
                 return false;
             }
 
