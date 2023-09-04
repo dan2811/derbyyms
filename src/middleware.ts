@@ -6,8 +6,8 @@ export default withAuth({
         authorized: ({ req, token }) => {
 
             const sessionCookie = req.cookies.get("next-auth.session-token");
-            console.log("SESSION COOKIE: ", sessionCookie);
-            console.log("TOKEN: ", token);
+            console.debug("SESSION COOKIE: ", JSON.stringify(sessionCookie));
+            console.debug("TOKEN: ", JSON.stringify(token));
             if (!sessionCookie) return false;
 
             // Check if the middleware is processing the
