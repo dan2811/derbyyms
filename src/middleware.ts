@@ -1,16 +1,13 @@
 import { withAuth } from "next-auth/middleware";
 import { Role } from "./types";
 
+
 export default withAuth({
     callbacks: {
         authorized: ({ req, token }) => {
 
             console.log("Middleware triggered");
-
-            const sessionCookie = req.cookies.get("next-auth.session-token");
-            console.debug("SESSION COOKIE: ", JSON.stringify(sessionCookie));
             console.debug("TOKEN: ", JSON.stringify(token));
-            if (!sessionCookie) return false;
 
             // Check if the middleware is processing the
             // route which requires a specific role
