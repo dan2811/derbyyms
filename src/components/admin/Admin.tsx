@@ -19,6 +19,8 @@ import PianoIcon from "@mui/icons-material/Piano";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SchoolIcon from "@mui/icons-material/School";
 import GroupsIcon from "@mui/icons-material/Groups";
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import { TasterEdit, TasterList, TasterShow } from "./Taster/Taster";
 
 export const MyLayout = (props: LayoutProps) => (
   <>
@@ -68,6 +70,14 @@ const AdminApp = () => {
         list={TeacherList}
         edit={TeacherEdit}
         icon={GroupsIcon}
+      />
+      <Resource
+        options={{ label: "Taster Enquiries" }}
+        name="tasterEnquiry"
+        show={TasterShow}
+        list={TasterList}
+        edit={TasterEdit}
+        icon={EmojiPeopleIcon}
       />
     </Admin>
   );
