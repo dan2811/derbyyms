@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { ArrayField, ChipField, DatagridConfigurable, Edit, List, ReferenceField, ReferenceManyField, Show, SimpleForm, SimpleShowLayout, SingleFieldList, TextField, TextInput, useRecordContext} from "react-admin";
+import { ArrayField, ArrayInput, ChipField, DatagridConfigurable, Edit, List, Loading, ReferenceArrayInput, ReferenceField, ReferenceInput, ReferenceManyField, SelectArrayInput, SelectInput, Show, SimpleForm, SimpleFormIterator, SimpleShowLayout, SingleFieldList, TextField, TextInput, useGetMany, useGetManyReference, useRecordContext, useReference, useReferenceManyFieldController} from "react-admin";
 
 export const TeacherList = () => {
     return (
@@ -8,7 +8,7 @@ export const TeacherList = () => {
             <TextField source="id" />
             <TextField source="fName" label="First name"/>
             <TextField source="lName" label="Last name"/>
-                <ReferenceManyField reference="teacherInstrument" target="teacherId">
+                <ReferenceManyField reference="teacherInstrument" target="teacherId" label="Instruments">
                     <SingleFieldList linkType={false}>
                         <ReferenceField source="instrumentId" reference="instrument">
                             <ChipField source="name" size="small" />
@@ -21,8 +21,6 @@ export const TeacherList = () => {
 };
   
 export const TeacherShow = () => {
-    const record = useRecordContext();
-    console.log("RECORD: ", record);
     return (
       <Show>
         <SimpleShowLayout>
@@ -32,7 +30,7 @@ export const TeacherShow = () => {
             <TextField source="phone" />
             <ReferenceManyField reference="teacherInstrument" target="teacherId" label="Instruments">
                     <SingleFieldList linkType={false}>
-                        <ReferenceField source="instrumentId" reference="instrument">
+                        <ReferenceField source="instrumentId" reference="instrument" >
                             <ChipField source="name" size="small" />
                         </ReferenceField>
                 </SingleFieldList>
@@ -43,6 +41,7 @@ export const TeacherShow = () => {
   };
   
 export const TeacherEdit = () => {
+
     return (
       <Edit>
         <SimpleForm>
@@ -50,7 +49,39 @@ export const TeacherEdit = () => {
             <TextInput source="lName" />
             <TextInput source="email" />
             <TextInput source="phone" />
+                <ReferenceInput source="teacherId" reference="teacherInstrument">
+                        <ReferenceArrayInput source="instrumentId" reference="instrument" helperText={false} />
+                </ReferenceInput>
+                <CustomReferenceSelect />
         </SimpleForm>
       </Edit>
     );
-  };
+};
+
+const CustomReferenceSelect = () => {
+    const record = useRecordContext();
+    interface Instrument {
+        id: string;
+        teacherId: string;
+        instrumentId: string;
+    };
+    const {data} = useGetManyReference<Instrument>(
+        'teacherInstrument',
+        { 
+            target: 'teacherId',
+            id: record.id,
+        }
+    );
+    console.log(data);
+
+
+    const { data: instruments} = useGetMany(
+        'instrument',
+        { ids: data?.map(el => el.instrumentId) }
+    );
+
+    console.log("INSTRUMENTS: ", instruments);
+    return (
+        <></>
+    );
+};
