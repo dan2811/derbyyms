@@ -1,4 +1,10 @@
-import { DatagridConfigurable, Edit, List, Show, SimpleForm, SimpleShowLayout, TextField, TextInput, TimeInput } from "react-admin";
+import { DatagridConfigurable, Edit, FunctionField, List, Show, SimpleForm, SimpleShowLayout, TextField, TextInput, TimeInput } from "react-admin";
+import { getMinsPastMidnight, parseMinsPastMidnight } from "~/helpers/time";
+
+interface Day {
+  openingTime: number;
+  closingTime: number;
+}
 
 export const DayList = () => {
     return (
@@ -6,8 +12,12 @@ export const DayList = () => {
         <DatagridConfigurable rowClick="show">
           <TextField source="id" />
           <TextField source="name" />
-          <TextField source="openingTime" />
-          <TextField source="closingTime" />
+          <FunctionField label="Opening time" render={({openingTime}: Day) => {
+            return parseMinsPastMidnight(openingTime);
+          }} />
+          <FunctionField label="Closing time" render={({ closingTime }: Day) => {
+            return parseMinsPastMidnight(closingTime);
+          }} />
         </DatagridConfigurable>
       </List>
     );
@@ -19,6 +29,12 @@ export const DayShow = () => {
         <SimpleShowLayout>
           <TextField source="id" />
           <TextField source="name" />
+          <FunctionField label="Opening time" render={({openingTime}: Day) => {
+            return parseMinsPastMidnight(openingTime);
+          }} />
+          <FunctionField label="Closing time" render={({ closingTime }: Day) => {
+            return parseMinsPastMidnight(closingTime);
+          }} />
         </SimpleShowLayout>
       </Show>
     );
@@ -30,25 +46,24 @@ export const DayEdit = () => {
         <SimpleForm>
           <TextField source="id" />
           <TextInput source="name" />
-          {/* <TimeInput source="openingTime" /> */}
-          {/* <TimeInput
-            source="closingTime"
+          <TimeInput
+            source="openingTime"
             format={(value: number) => {
-              const date = new Date(new Date().setMinutes(value));
-              console.log(date);
-              return value;
+              return parseMinsPastMidnight(value);
             }}
             parse={(value: string) => {
-              const [hours, minutes]: string[] = value.split(":");
-              const date = new Date();
-              date.setHours(hours);
-              date.setMinutes(minutes);
-              return date.toLocaleTimeString({
-                hour: true,
-                minute: true,
-              });
+              return getMinsPastMidnight(value);
             }}
-          /> */}
+          />
+          <TimeInput
+            source="closingTime"
+            format={(value: number) => {
+              return parseMinsPastMidnight(value);
+            }}
+            parse={(value: string) => {
+              return getMinsPastMidnight(value);
+            }}
+          />
         </SimpleForm>
       </Edit>
     );
