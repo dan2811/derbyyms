@@ -22,37 +22,37 @@ class dbSeeder {
           {
             name: "Monday",
             openingTime: 960,
-            closingTime: 960,
+            closingTime: 1200,
           },
           {
             name: "Tuesday",
             openingTime: 960,
-            closingTime: 960,
+            closingTime: 1200,
           },
           {
             name: "Wednesday",
             openingTime: 960,
-            closingTime: 960,
+            closingTime: 1200,
           },
           {
             name: "Thursday",
             openingTime: 960,
-            closingTime: 960,
+            closingTime: 1200,
           },
           {
             name: "Friday",
             openingTime: 960,
-            closingTime: 960,
+            closingTime: 1200,
           },
           {
             name: "Saturday",
             openingTime: 960,
-            closingTime: 960,
+            closingTime: 1200,
           },
           {
             name: "Sunday",
             openingTime: 960,
-            closingTime: 960,
+            closingTime: 1200,
           },
         ],
       });
@@ -131,7 +131,7 @@ class dbSeeder {
             lName: "Smith",
             email: "test@derbyyms.co.uk",
             phone: "01234567890",
-            dob: new Date('1990-01-01'),
+            dob: new Date('1990-01-01').toISOString(),
             addressLine1: "1 Test Street",
             addressLine2: "Test Town",
           },
@@ -141,7 +141,7 @@ class dbSeeder {
             lName: "Smith",
             email: "test1@derbyyms.co.uk",
             phone: "01234567890",
-            dob: new Date("1990-01-01"),
+            dob: new Date("1990-01-01").toISOString(),
             addressLine1: "1 Test Street",
             addressLine2: "Test Town",
           }
