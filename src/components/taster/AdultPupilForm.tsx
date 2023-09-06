@@ -75,7 +75,7 @@ const ExistingAdultPupilForm = ({
               required
             >
               {instruments.map((instrument) => (
-                <option key={instrument.id} value={instrument.name}>
+                <option key={instrument.id} value={instrument.id}>
                   {instrument.name}
                 </option>
               ))}
@@ -308,7 +308,7 @@ const NewAdultPupilForm = ({ instruments }: { instruments: Instrument[] }) => {
             >
               <option disabled>Choose instrument...</option>
               {instruments.map((instrument) => (
-                <option key={instrument.id} value={instrument.name}>
+                <option key={instrument.id} value={instrument.id}>
                   {instrument.name}
                 </option>
               ))}

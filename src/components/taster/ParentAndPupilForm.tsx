@@ -326,7 +326,7 @@ const NewParentAndPupilForm = ({
               required
             >
               {instruments.map((instrument) => (
-                <option key={instrument.id} value={instrument.name}>
+                <option key={instrument.id} value={instrument.id}>
                   {instrument.name}
                 </option>
               ))}
@@ -487,7 +487,7 @@ const ExistingParentAndPupilForm = ({
             required
           >
             {instruments.map((instrument) => (
-              <option key={instrument.id} value={instrument.name}>
+              <option key={instrument.id} value={instrument.id}>
                 {instrument.name}
               </option>
             ))}
