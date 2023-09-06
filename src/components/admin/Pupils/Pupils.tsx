@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
-import { DatagridConfigurable, DateField, Edit, List, Show, SimpleForm, SimpleShowLayout, TextField, TextInput} from "react-admin";
+import { Chip } from "@mui/material";
+import { ChipField, DatagridConfigurable, DateField, Edit, FunctionField, List, ReferenceField, ReferenceManyField, Show, SimpleForm, SimpleShowLayout, SingleFieldList, TextField, TextInput} from "react-admin";
 
 const pupilFilters = [
     <TextInput source="fName" label="First name" />,
@@ -40,9 +41,24 @@ export const PupilShow = () => {
     return (
       <Show>
         <SimpleShowLayout>
-            <TextField source="id" />
-            <TextField source="fName" />
-            <TextField source="lName" />
+          <TextField source="id" />
+          <TextField source="fName" label="First Name"/>
+          <TextField source="lName" label="Last Name"/>
+          <ReferenceManyField reference="pupilParent" target="pupilId" label="Parents">
+                <SingleFieldList>
+              <ReferenceField source="parentId" reference="pupil" link="show" >
+                <FunctionField render={(record: { fName: string, lName: string; }) => <Chip label={`${record.fName} ${record.lName}`} />} />
+              </ReferenceField>
+            </SingleFieldList>
+      </ReferenceManyField>
+
+      <ReferenceManyField reference="pupilParent" target="parentId" label="Children">
+                  <SingleFieldList  >
+                    <ReferenceField source="pupilId" reference="pupil" link="show" >
+                      <FunctionField render={(record: { fName: string, lName: string; }) => <Chip label={`${record.fName} ${record.lName}`} />} />
+                    </ReferenceField>
+                  </SingleFieldList>
+              </ReferenceManyField>
         </SimpleShowLayout>
       </Show>
     );
