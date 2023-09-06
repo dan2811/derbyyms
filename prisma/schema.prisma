@@ -183,16 +183,27 @@ model Pupil {
   enrolled      DateTime?
   droppedOut    DateTime?
   paymentType   String?
-  parent        Pupil[]         @relation("ParentChildren")
-  children      Pupil[]         @relation("ParentChildren")
   Attendance    Attendance[]
   payment       Payment[]
   tasterEnquiry TasterEnquiry[]
   userId        String?         @unique
   User          User?           @relation(fields: [userId], references: [id])
   GradeResult   GradeResult[]
+  parents       PupilParent[]   @relation("parents")
+  children      PupilParent[]   @relation("children")
 
   @@index([userId])
+}
+
+model PupilParent {
+  id       String @id @default(cuid())
+  pupilId  String
+  children Pupil  @relation("children", fields: [pupilId], references: [id])
+  parentId String
+  parents  Pupil  @relation("parents", fields: [parentId], references: [id])
+
+  @@index([pupilId])
+  @@index([parentId])
 }
 
 model Teacher {
