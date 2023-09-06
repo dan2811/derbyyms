@@ -20,7 +20,14 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SchoolIcon from "@mui/icons-material/School";
 import GroupsIcon from "@mui/icons-material/Groups";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
-import { TasterEdit, TasterList, TasterShow } from "./Taster/Taster";
+import {
+  TasterCreate,
+  TasterEdit,
+  TasterList,
+  TasterShow,
+} from "./Taster/Taster";
+import { useSession } from "next-auth/react";
+import { Role } from "~/types";
 
 export const MyLayout = (props: LayoutProps) => (
   <>
@@ -37,6 +44,13 @@ const MyAppBar = () => (
 );
 
 const AdminApp = () => {
+  const session = useSession();
+  if (session.status !== "authenticated") {
+    return null;
+  }
+
+  const isSuperAdmin = session.data.user.role === Role.superAdmin;
+
   return (
     <Admin dataProvider={dataProvider("/api")} layout={MyLayout}>
       <Resource
@@ -47,14 +61,16 @@ const AdminApp = () => {
         edit={InstrumentEdit}
         icon={PianoIcon}
       />
-      <Resource
-        name="day"
-        show={DayShow}
-        list={DayList}
-        edit={DayEdit}
-        recordRepresentation="name"
-        icon={AccessTimeIcon}
-      />
+      {isSuperAdmin ?? (
+        <Resource
+          name="day"
+          show={DayShow}
+          list={DayList}
+          edit={DayEdit}
+          recordRepresentation="name"
+          icon={AccessTimeIcon}
+        />
+      )}
       <Resource
         recordRepresentation={(record) => `${record.fName} ${record.lName}`}
         name="pupil"
@@ -77,6 +93,7 @@ const AdminApp = () => {
         show={TasterShow}
         list={TasterList}
         edit={TasterEdit}
+        create={TasterCreate}
         icon={EmojiPeopleIcon}
       />
     </Admin>
